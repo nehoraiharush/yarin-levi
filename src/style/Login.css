@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Bacasime+Antique&display=swap');
+
+.form-group {
+    background-color: rgba(128, 128, 128, 0.5);
+}
+
+.transparent-input {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.transparent-input::placeholder {
+    color: white !important;
+}
+
+.login-container,
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    direction: rtl;
+    flex-direction: column;
+    color: white;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/bodybuilderIcon.jpeg');
+    background-repeat: no-repeat;
+    background-position: center;
+
+
+}
+
+.login-btn,
+.signup-btn {
+    width: 100%;
+    margin-top: 1rem;
+    color: white;
+    border-color: white;
+    z-index: 2;
+}
+
+.login-btn:hover,
+.signup-btn:hover {
+    background-color: white;
+    color: black;
+}

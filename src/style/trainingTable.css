@@ -1,0 +1,30 @@
+.custom-table::-webkit-scrollbar {
+    display: none;
+}
+
+
+.custom-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+th:nth-child(1) {
+    border-top-left-radius: 15px;
+}
+
+th:nth-last-child(1) {
+    border-top-right-radius: 15px;
+}
+
+tr:last-child td:last-child {
+    border-bottom-right-radius: 15px;
+}
+
+tr:last-child td:first-child {
+    border-bottom-left-radius: 15px;
+}
+
+textarea {
+    resize: none !important;
+    height: 28px;
+}

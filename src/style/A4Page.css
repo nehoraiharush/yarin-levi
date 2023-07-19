@@ -1,0 +1,60 @@
+.textarea {
+    resize: none;
+    background-color: aliceblue !important;
+    color: black;
+    padding: 10%;
+}
+
+.big {
+    height: 1000px;
+}
+
+.form-small-page {
+    margin-top: 60px;
+}
+
+.form-big-page {
+    margin-top: 40px;
+}
+
+.small {
+    height: 227px;
+    cursor: pointer;
+    width: 170px;
+    border-radius: 5px;
+    word-wrap: break-word;
+}
+
+
+.scrollable-col {
+    overflow-y: auto;
+}
+
+.sticky-col {
+    position: sticky;
+    height: 100%;
+    top: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - 60px);
+}
+
+.sticky-col:hover::-webkit-scrollbar {
+    display: block !important;
+    width: 10px;
+    margin-left: 2px;
+    scroll-behavior: smooth;
+}
+
+.sticky-col::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    border-radius: 20px;
+    width: 10px;
+}
+
+.page-anchor {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

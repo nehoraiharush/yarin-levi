@@ -1,0 +1,46 @@
+.sidebar {
+    height: 100vh;
+    overflow-y: auto;
+    position: fixed;
+    top: 0;
+    right: -200px;
+    width: 200px;
+    background-color: #CCCCCC;
+    transition: right 0.3s ease-in-out;
+    z-index: 5;
+}
+
+.sidebar.open {
+    right: 0;
+}
+
+.toggle-btn-wrapper {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    transition: right 0.3s ease-in-out;
+}
+
+.toggle-btn-wrapper.open {
+    right: 220px;
+    position: absolute;
+}
+
+.nav {
+    direction: rtl;
+    margin-top: 50%;
+}
+
+.nav-link {
+    color: black;
+    padding-top: 15%;
+}
+
+.nav-link:hover {
+    color: white;
+}
+
+h1 {
+    cursor: pointer;
+}
