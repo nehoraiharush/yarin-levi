@@ -20,7 +20,7 @@ export const ISMANAGER = 'isManager';
 
 const Login = () => {
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const userNameRef = useRef();
     const passwordRef = useRef();
@@ -41,18 +41,13 @@ const Login = () => {
             });
             try {
                 const userResponse = await signInWithEmailAndPassword(auth, `${userNameRef.current.value.replace(' ', '%')}@gmail.com`, passwordRef.current.value);
-                // dispatchUser({
-                //     type: SETUSER,
-                //     payload: {
-                //         user: {
-                //             id: userResponse.user.uid,
-                //             name: userResponse.user.email.split('@')[0].replace('%', ' ')
-                //         }
-                //     }
-                // });
                 localStorage.setItem(USERID, userResponse.user.uid);
-                localStorage.setItem(USERNAME, userResponse.user.email.split('@')[0].replace('%', ' '))
-                // localStorage.setItem(ISMANAGER, false);
+                const name = userResponse.user.email.split('@')[0].replace('%', ' ')
+                localStorage.setItem(USERNAME, name)
+                if (name === 'ירין לוי') {
+                    navigate('/all-trainers');
+                }
+
                 toast.success('שלום ' + userResponse.user.email.split('@')[0].replace('%', ' '));
             } catch (error) {
                 toast.error('משתמש לא נמצא');
