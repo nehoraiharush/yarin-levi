@@ -25,7 +25,7 @@ const Procces = ({ trainer, setTrainer }) => {
             paddingTop: '5px',
             paddingRight: '10px',
             paddingLeft: '15px',
-            height: '8em'
+            height: '180px'
         }}>
             <div dir='auto'>
                 בתהליך:

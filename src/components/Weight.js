@@ -26,7 +26,7 @@ const Weight = ({ trainer, setTrainer }) => {
                     name='weight'
                     onChange={handleChange}
                     style={{
-                        height: '95px',
+                        height: '150px',
                         width: '135px',
                         fontSize: '5em',
                         fontWeight: '500',

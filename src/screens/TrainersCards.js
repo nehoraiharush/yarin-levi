@@ -83,17 +83,19 @@ export default function TrainersCards() {
     const Cards = () => {
         return (
             <>
-                <Row>
-                    <Col>
-                        <div style={{ ...trainersCardsStyle, alignItems: 'center' }}>
-                            {/* Display filtered active trainers */}
-                            {filteredActiveTrainers.map((trainer, index) => (
-                                <TrainerCard key={index} id={trainer.id} trainer={trainer} />
-                            ))}
-                        </div>
-                    </Col>
-                </Row>
-                <Row>
+                {filteredActiveTrainers.length > 0 &&
+                    <Row>
+                        <Col>
+                            <div style={{ ...trainersCardsStyle, alignItems: 'center' }}>
+                                {/* Display filtered active trainers */}
+                                {filteredActiveTrainers.map((trainer, index) => (
+                                    <TrainerCard key={index} id={trainer.id} trainer={trainer} />
+                                ))}
+                            </div>
+                        </Col>
+                    </Row>
+                }
+                {filteredPauseTrainers.length > 0 && <Row>
                     <Col>
                         <div style={{ ...trainersCardsStyle, alignItems: 'flex-start' }}>
                             {filteredPauseTrainers.map((trainer, index) => (
@@ -102,15 +104,18 @@ export default function TrainersCards() {
                         </div>
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-                        <div style={{ ...trainersCardsStyle, alignItems: 'flex-start' }}>
-                            {filteredOfflineTrainers.map((trainer, index) => (
-                                <TrainerCard key={index} id={trainer.id} trainer={trainer} />
-                            ))}
-                        </div>
-                    </Col>
-                </Row>
+                }
+                {filteredOfflineTrainers.length > 0 &&
+                    <Row>
+                        <Col>
+                            <div style={{ ...trainersCardsStyle, alignItems: 'flex-start' }}>
+                                {filteredOfflineTrainers.map((trainer, index) => (
+                                    <TrainerCard key={index} id={trainer.id} trainer={trainer} />
+                                ))}
+                            </div>
+                        </Col>
+                    </Row>
+                }
             </>
         );
     }
@@ -146,7 +151,7 @@ export default function TrainersCards() {
                         <LoadingSpinner />
                     </div>
             }
-            <FloatingAddButton />
+            <FloatingAddButton path={'../signup'} color={'#25d366'} text={'+'} />
 
         </Container>
     );

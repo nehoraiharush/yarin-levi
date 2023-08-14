@@ -74,7 +74,29 @@ const TrainerView = ({ toggleSidebar, id, trainer, setTrainer }) => {
             {
                 trainer ?
                     <>
-                        <Row style={{ marginTop: '70px', gap: '40px' }}>
+                        {
+                            hasChanged ?
+                                <Row style={{ display: 'grid', placeItems: 'center', paddingTop: '20px' }} >
+                                    {
+                                        !state?.isLoading ?
+                                            <Button
+                                                onClick={handleDispatchChanges}
+                                                className="signup-btn"
+                                                variant="btn btn-lg"
+                                            >
+                                                שמור שינויים
+                                            </Button>
+                                            :
+                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                <LoadingSpinner />
+                                            </div>
+                                    }
+
+                                </Row>
+                                :
+                                null
+                        }
+                        <Row style={{ marginTop: '40px', gap: '40px' }}>
                             <Col
                                 lg={4}
                                 style={{
@@ -125,17 +147,17 @@ const TrainerView = ({ toggleSidebar, id, trainer, setTrainer }) => {
                                 </div>
                                 <h4>גיל:
                                     <input
-                                        name='trend'
                                         onChange={(e) => changeTrainerData({
                                             ...trainer,
                                             age: parseInt(e.target.value)
                                         })}
                                         style={{
-                                            width: '40px',
+                                            width: '80px',
                                             background: 'none',
                                             border: 'none',
                                             color: 'white',
-                                            textAlign: 'center'
+                                            textAlign: 'right',
+                                            paddingRight: '5px'
                                         }}
                                         dir='auto'
                                         value={trainer.age ? trainer.age : 0}
@@ -196,28 +218,6 @@ const TrainerView = ({ toggleSidebar, id, trainer, setTrainer }) => {
                                         </Button>
                                 }
                             </Col>
-
-                            {
-                                hasChanged ?
-                                    <Col lg={6} style={{ display: 'grid', placeItems: 'center' }} >
-                                        {
-                                            !state?.isLoading ?
-                                                <Button
-                                                    onClick={handleDispatchChanges}
-                                                    className="signup-btn"
-                                                    variant="btn btn-lg"
-                                                >
-                                                    שמור שינויים
-                                                </Button>
-                                                :
-                                                <LoadingSpinner />
-                                        }
-
-                                    </Col>
-                                    :
-                                    null
-                            }
-
                         </Row>
                     </>
                     :
