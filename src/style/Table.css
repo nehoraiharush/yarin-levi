@@ -1,0 +1,8 @@
+td,
+th {
+    width: min(100px, 80%) !important;
+}
+
+tr {
+    width: 50px !important;
+}

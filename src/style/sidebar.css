@@ -3,8 +3,8 @@
     overflow-y: auto;
     position: fixed;
     top: 0;
-    right: -200px;
-    width: 200px;
+    right: -210px;
+    width: 210px;
     background-color: #CCCCCC;
     transition: right 0.3s ease-in-out;
     z-index: 5;
@@ -23,8 +23,9 @@
 }
 
 .toggle-btn-wrapper.open {
-    right: 220px;
-    position: absolute;
+    right: 230px;
+    position: fixed;
+    z-index: 5;
 }
 
 .nav {
@@ -41,6 +42,24 @@
     color: white;
 }
 
+.nav-link:active {
+    color: white;
+}
+
+.nav-link-trainerView:hover {
+    color: #A5B0C0 !important;
+}
+
+.nav-link-trainerView:active {
+    color: #A5B0C0;
+}
+
 h1 {
     cursor: pointer;
+}
+
+header {
+    padding: 2px;
+    background-image: url('../assets/gymPhoto-barbel-bg.jpeg');
+    border-radius: 10px;
 }

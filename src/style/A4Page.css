@@ -1,8 +1,9 @@
 .textarea {
     resize: none;
-    background-color: aliceblue !important;
+    background-color: white !important;
     color: black;
     padding: 10%;
+    word-wrap: break-word;
 }
 
 .big {
@@ -23,6 +24,7 @@
     width: 170px;
     border-radius: 5px;
     word-wrap: break-word;
+    overflow: hidden;
 }
 
 
@@ -39,22 +41,47 @@
     max-height: calc(100vh - 60px);
 }
 
-.sticky-col:hover::-webkit-scrollbar {
-    display: block !important;
-    width: 10px;
-    margin-left: 2px;
-    scroll-behavior: smooth;
-}
-
-.sticky-col::-webkit-scrollbar-thumb {
-    background-color: #fff;
-    border-radius: 20px;
-    width: 10px;
-}
-
 .page-anchor {
     text-decoration: none;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.img-fluid-small {
+    max-width: 50%;
+    height: auto;
+}
+
+.dynamic-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Add this property to collapse table borders */
+}
+
+.dynamic-table td {
+    border: 1px solid #000;
+    /* Customize the border style as needed */
+    padding: 8px;
+    /* Add padding to the cells for spacing */
+    font-size: calc(0.8vw + 1vmin);
+    /* You can adjust the formula as needed */
+    white-space: nowrap;
+}
+
+.dynamic-table-small td,
+.dynamic-table-small tr {
+    border: 1px solid #000;
+    /* Customize the border style as needed */
+    padding: calc(0.1vw);
+    /* Add padding to the cells for spacing */
+    font-size: calc(0.1vw + 0.5vmin);
+    height: 1%;
+    /* You can adjust the formula as needed */
+    white-space: nowrap;
 }
