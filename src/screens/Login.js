@@ -45,7 +45,7 @@ const Login = () => {
                 const name = userResponse.user.email.split('@')[0].replace('%', ' ')
                 localStorage.setItem(USERNAME, name)
                 if (name === 'ירין לוי') {
-                    navigate(`/all-trainers`);
+                    navigate(`../all-trainers`);
                 }
 
                 toast.success('שלום ' + userResponse.user.email.split('@')[0].replace('%', ' '));

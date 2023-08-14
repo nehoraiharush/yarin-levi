@@ -35,28 +35,28 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
                     className={`sidebar ${isOpen}`}
                 >
 
-                    <div onClick={() => navigate(`/home`)}><YarinLevi color='black' /></div>
-                    <Nav defaultActiveKey={`/home`} className='nav'>
+                    <div onClick={() => navigate(`../home`)}><YarinLevi color='black' /></div>
+                    <Nav defaultActiveKey={`../home`} className='nav'>
                         {
                             userConnected ?
                                 <div>
-                                    <Link className='nav-link' href={`/trainer-dashboard/${trainer.id}`}>
+                                    <Link className='nav-link' href={`../trainer-dashboard/${trainer.id}`}>
                                         שלום {trainer.name}
                                     </Link>
                                     <Link className='nav-link'
-                                        to={`/editor/${trainer.id}`}
+                                        to={`../editor/${trainer.id}`}
                                         state={{ docId: trainer.docId, type: 'trainingPlan' }}
                                     >
                                         תכנית אימונים
                                     </Link>
                                     <Link className='nav-link'
-                                        to={`/editor/${trainer.id}`}
+                                        to={`../editor/${trainer.id}`}
                                         state={{ docId: trainer.docId, type: 'nutrition' }}
                                     >תפריט תזונה</Link>
                                 </div>
                                 :
                                 <div>
-                                    <Link className='nav-link' href={`/login`} >התחבר</Link>
+                                    <Link className='nav-link' href={`../login`} >התחבר</Link>
                                     <Nav.Link href={`https://wa.me/972584560107/?text=${encodeURIComponent(MESSAGE)}`} target='_blank'>התחל את השינוי <strong>שלך</strong></Nav.Link>
                                 </div>
                         }

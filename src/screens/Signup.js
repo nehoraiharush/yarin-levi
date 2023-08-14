@@ -109,7 +109,7 @@ const Signup = () => {
                     }
                     const docId = await createTrainerData(docData);
                     toast.success(`${name} נרשם בהצלחה`);
-                    navigate(`/trainer-dashboard/${userResponse.user.uid}`, { state: { docId } });
+                    navigate(`../trainer-dashboard/${userResponse.user.uid}`, { state: { docId } });
                 } catch (error) {
                     toast.error(error.message);
                 } finally {

@@ -9,7 +9,7 @@ const TrainerCard = ({ trainer, id }) => {
 
     const toTrainerDash = () => {
         console.log("CARD", id)
-        navigate(`/trainer-dashboard/${id}`, { state: { docId: trainer.docId } });
+        navigate(`../trainer-dashboard/${id}`, { state: { docId: trainer.docId } });
     }
 
     return (

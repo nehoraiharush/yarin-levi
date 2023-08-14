@@ -128,7 +128,7 @@ const Editor = () => {
                                                 שמור שינויים
                                             </Button>
                                             <Link className='nav-link'
-                                                to={`/training-info/${trainer.id}`}
+                                                to={`../training-info/${trainer.id}`}
                                                 state={{ docId: trainer.docId }}
                                             >
                                                 תכנית אימונים
