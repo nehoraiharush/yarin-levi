@@ -14,6 +14,7 @@ import TrainerDashboard from './screens/TrainerDashboard.js';
 import { UserProvider } from './components/UserContext.js';
 import { ToastContainer, Zoom } from 'react-toastify';
 
+export const APPNAME = '/yarin-levi'
 
 
 function App() {
@@ -37,15 +38,15 @@ function App() {
 
         <BrowserRouter>
           <Routes>
-            <Route path='/login' element={<Login />} />
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/' element={<HomeScreen />} />
-            <Route path='/training-info/:id' element={<TrainingPage />} />
-            <Route path='/editor/:id' element={<Editor />} />
-            <Route path='/all-trainers' element={<TrainersCards />} />
-            <Route path='/trainer-dashboard/:id' element={<TrainerDashboard />} />
+            <Route path={`${APPNAME}/login`} element={<Login />} />
+            <Route path={`${APPNAME}/signup`} element={<Signup />} />
+            <Route path={`${APPNAME}/`} element={<HomeScreen />} />
+            <Route path={`${APPNAME}/training-info/:id`} element={<TrainingPage />} />
+            <Route path={`${APPNAME}/editor/:id`} element={<Editor />} />
+            <Route path={`${APPNAME}/all-trainers`} element={<TrainersCards />} />
+            <Route path={`${APPNAME}/trainer-dashboard/:id`} element={<TrainerDashboard />} />
 
-            <Route path='*' element={<NotFoundPage />} />
+            <Route path={`${APPNAME}/*`} element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
 

@@ -14,6 +14,7 @@ import '../style/Login.css';
 // import { useUserContext } from "../components/UserContext";
 import { toast } from "react-toastify";
 import { SETLOADING, useTrainerContext } from "../components/TrainerContexts";
+import { APPNAME } from "../App";
 
 const initValues = [
     {
@@ -109,7 +110,7 @@ const Signup = () => {
                     }
                     const docId = await createTrainerData(docData);
                     toast.success(`${name} נרשם בהצלחה`);
-                    navigate(`/trainer-dashboard/${userResponse.user.uid}`, { state: { docId } });
+                    navigate(`${APPNAME}/trainer-dashboard/${userResponse.user.uid}`, { state: { docId } });
                 } catch (error) {
                     toast.error(error.message);
                 } finally {

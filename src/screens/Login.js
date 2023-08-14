@@ -13,6 +13,7 @@ import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/Login.css';
 import { SETLOADING, useTrainerContext } from "../components/TrainerContexts";
+import { APPNAME } from "../App";
 
 export const USERID = 'userId';
 export const USERNAME = 'username';
@@ -45,7 +46,7 @@ const Login = () => {
                 const name = userResponse.user.email.split('@')[0].replace('%', ' ')
                 localStorage.setItem(USERNAME, name)
                 if (name === 'ירין לוי') {
-                    navigate('/all-trainers');
+                    navigate(`${APPNAME}/all-trainers`);
                 }
 
                 toast.success('שלום ' + userResponse.user.email.split('@')[0].replace('%', ' '));

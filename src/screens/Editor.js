@@ -12,6 +12,7 @@ import { SETLOADING, useTrainerContext } from "../components/TrainerContexts";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { Link, useLocation } from "react-router-dom";
+import { APPNAME } from "../App";
 
 const Editor = () => {
     const [page, setPage] = useState(new Page("", 1));
@@ -128,7 +129,7 @@ const Editor = () => {
                                                 שמור שינויים
                                             </Button>
                                             <Link className='nav-link'
-                                                to={`/training-info/${trainer.id}`}
+                                                to={`${APPNAME}/training-info/${trainer.id}`}
                                                 state={{ docId: trainer.docId }}
                                             >
                                                 תכנית אימונים
