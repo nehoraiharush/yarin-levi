@@ -6,7 +6,6 @@ import { IoMdMenu, IoMdClose } from "react-icons/io";
 import YarinLevi from './YarinLevi.js'
 import { Link, useNavigate } from 'react-router-dom';
 import { USERID, USERNAME } from '../screens/Login';
-import { APPNAME } from '../App';
 
 
 const MESSAGE = 'אני גם רוצה להתחיל את השינוי שלי💪'
@@ -36,28 +35,28 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
                     className={`sidebar ${isOpen}`}
                 >
 
-                    <div onClick={() => navigate(`${APPNAME}/home`)}><YarinLevi color='black' /></div>
-                    <Nav defaultActiveKey={`${APPNAME}/home`} className='nav'>
+                    <div onClick={() => navigate(`/home`)}><YarinLevi color='black' /></div>
+                    <Nav defaultActiveKey={`/home`} className='nav'>
                         {
                             userConnected ?
                                 <div>
-                                    <Link className='nav-link' href={`${APPNAME}/trainer-dashboard/${trainer.id}`}>
+                                    <Link className='nav-link' href={`/trainer-dashboard/${trainer.id}`}>
                                         שלום {trainer.name}
                                     </Link>
                                     <Link className='nav-link'
-                                        to={`${APPNAME}/editor/${trainer.id}`}
+                                        to={`/editor/${trainer.id}`}
                                         state={{ docId: trainer.docId, type: 'trainingPlan' }}
                                     >
                                         תכנית אימונים
                                     </Link>
                                     <Link className='nav-link'
-                                        to={`${APPNAME}/editor/${trainer.id}`}
+                                        to={`/editor/${trainer.id}`}
                                         state={{ docId: trainer.docId, type: 'nutrition' }}
                                     >תפריט תזונה</Link>
                                 </div>
                                 :
                                 <div>
-                                    <Link className='nav-link' href={`${APPNAME}/login`} >התחבר</Link>
+                                    <Link className='nav-link' href={`/login`} >התחבר</Link>
                                     <Nav.Link href={`https://wa.me/972584560107/?text=${encodeURIComponent(MESSAGE)}`} target='_blank'>התחל את השינוי <strong>שלך</strong></Nav.Link>
                                 </div>
                         }

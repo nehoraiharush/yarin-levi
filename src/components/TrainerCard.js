@@ -4,14 +4,12 @@ import '../style/TrainerCard.css';
 import { useNavigate } from 'react-router-dom';
 
 import LoadingSpinner from './Loading';
-import { APPNAME } from '../App';
-
 const TrainerCard = ({ trainer, id }) => {
     const navigate = useNavigate();
 
     const toTrainerDash = () => {
         console.log("CARD", id)
-        navigate(`${APPNAME}/trainer-dashboard/${id}`, { state: { docId: trainer.docId } });
+        navigate(`/trainer-dashboard/${id}`, { state: { docId: trainer.docId } });
     }
 
     return (
