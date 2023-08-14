@@ -10,6 +10,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../components/Loading';
+import FloatingAddButton from '../components/FloatingAddButton';
 
 const trainersCardsStyle = {
     display: 'flex',
@@ -145,6 +146,7 @@ export default function TrainersCards() {
                         <LoadingSpinner />
                     </div>
             }
+            <FloatingAddButton />
 
         </Container>
     );

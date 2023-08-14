@@ -1,0 +1,27 @@
+.floating-button {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 80px;
+    height: 80px;
+    background-color: #25d366;
+    /* Adjust color as needed */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.floating-button:hover {
+    background-color: #128c7e;
+    /* Adjust hover color as needed */
+}
+
+.plus-icon {
+    font-size: 46px;
+    color: #ffffff;
+    padding-bottom: 5px;
+}
