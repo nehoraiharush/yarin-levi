@@ -33,25 +33,23 @@ function App() {
         pauseOnHover
         theme="dark"
       />
-      {/* <UserProvider> */}
       <TrainerProvider>
 
-        <BrowserRouter>
+        <BrowserRouter basename={`${APPNAME}`}>
           <Routes>
-            <Route path={`${APPNAME}/login`} element={<Login />} />
-            <Route path={`${APPNAME}/signup`} element={<Signup />} />
-            <Route path={`${APPNAME}/`} element={<HomeScreen />} />
-            <Route path={`${APPNAME}/training-info/:id`} element={<TrainingPage />} />
-            <Route path={`${APPNAME}/editor/:id`} element={<Editor />} />
-            <Route path={`${APPNAME}/all-trainers`} element={<TrainersCards />} />
-            <Route path={`${APPNAME}/trainer-dashboard/:id`} element={<TrainerDashboard />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/' element={<HomeScreen />} />
+            <Route path='/training-info/:id' element={<TrainingPage />} />
+            <Route path='/editor/:id' element={<Editor />} />
+            <Route path='/all-trainers' element={<TrainersCards />} />
+            <Route path='/trainer-dashboard/:id' element={<TrainerDashboard />} />
 
-            <Route path={`${APPNAME}/*`} element={<NotFoundPage />} />
+            <Route path='/*' element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
 
       </TrainerProvider>
-      {/* </UserProvider> */}
     </div>
   );
 }
