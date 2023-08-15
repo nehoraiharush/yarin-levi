@@ -151,7 +151,7 @@ export default function TrainersCards() {
                         <LoadingSpinner />
                     </div>
             }
-            <FloatingAddButton path={'../signup'} color={'#25d366'} text={'+'} />
+            <FloatingAddButton path={'../signup'} text={'+'} />
 
         </Container>
     );

@@ -173,7 +173,7 @@ const TrainerView = ({ toggleSidebar, id, trainer, setTrainer }) => {
                                 <Procces trainer={trainer} setTrainer={changeTrainerData} />
                             </Col>
                         </Row>
-                        <Row style={{ marginTop: '50px', padding: '10px' }}>
+                        <Row style={{ marginTop: '40px', padding: '10px' }}>
                             <Col lg={6} style={{ display: 'grid', placeItems: 'center' }} >
 
                                 {

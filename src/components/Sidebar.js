@@ -40,7 +40,10 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
                         {
                             userConnected ?
                                 <div>
-                                    <Link className='nav-link' href={`../trainer-dashboard/${trainer.id}`}>
+                                    <Link className='nav-link'
+                                        to={`../trainer-dashboard/${trainer.id}`}
+                                        state={{ docId: trainer.docId }}
+                                    >
                                         שלום {trainer.name}
                                     </Link>
                                     <Link className='nav-link'

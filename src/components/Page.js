@@ -14,6 +14,7 @@ import { useLocation } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import LoadingSpinner from "./Loading";
+import BackButton from "./BackButton";
 
 
 const FONTSIZEREGEX = /font-size:\s*(\d+)pt;/g;
@@ -28,8 +29,10 @@ const TrainingPage = () => {
     const docId = state?.docId;
     console.log(docId);
     const getData = async () => {
-        const data = await getDoc(doc(db, 'trainers', docId))
-        setTrainer({ ...data.data(), docId });
+        if (docId) {
+            const data = await getDoc(doc(db, 'trainers', docId))
+            setTrainer({ ...data.data(), docId });
+        }
     }
 
     useEffect(() => {
@@ -203,7 +206,7 @@ const TrainingPage = () => {
                     </div>
             }
 
-
+            <BackButton />
         </Container >
     );
 };

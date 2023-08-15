@@ -11,19 +11,23 @@ import { db } from '../firebase/firebaseConfig'
 import { doc, getDoc } from 'firebase/firestore'
 
 import '../style/TrainerCard.css';
+import BackButton from '../components/BackButton'
 
 const TrainerDashboard = () => {
 
     const navigate = useNavigate();
     const { id } = useParams();
-    const { docId } = useLocation().state;
+    const state = useLocation()?.state;
+    const docId = state?.docId
 
     const [isOpen, setOpen] = useState('')
     const [trainer, setTrainer] = useState(null)
 
     const getData = async () => {
-        const data = await getDoc(doc(db, 'trainers', docId))
-        setTrainer({ ...data.data(), docId });
+        if (docId) {
+            const data = await getDoc(doc(db, 'trainers', docId))
+            setTrainer({ ...data.data(), docId });
+        }
     }
 
     useEffect(() => {
@@ -41,7 +45,7 @@ const TrainerDashboard = () => {
 
         <div className='dashboard-container' >
             {
-                trainer === null || trainer === undefined || !trainer?.id ?
+                trainer === null || trainer === undefined || !trainer?.id || !docId ?
                     <div onClick={() => setOpen('')} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }} >
                         <LoadingSpinner />
                     </div>
@@ -51,6 +55,7 @@ const TrainerDashboard = () => {
                         <Sidebar trainer={trainer} isOpen={isOpen} setOpen={setOpen} />
                     </>
             }
+            <BackButton />
         </div>
     )
 }

@@ -12,6 +12,7 @@ import { SETLOADING, useTrainerContext } from "../components/TrainerContexts";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { Link, useLocation } from "react-router-dom";
+import BackButton from "../components/BackButton";
 
 const Editor = () => {
     const [page, setPage] = useState(new Page("", 1));
@@ -199,7 +200,7 @@ const Editor = () => {
                         </Row>
                     </div>
             }
-
+            <BackButton />
         </Container >
     );
 };

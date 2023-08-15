@@ -2,8 +2,8 @@
     position: fixed;
     bottom: 30px;
     left: 30px;
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     /* Adjust color as needed */
     border-radius: 50%;
     display: flex;
@@ -12,15 +12,29 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: background-color 0.3s ease;
+    z-index: 5;
 }
 
-.floating-button:hover {
+.return-btn {
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 100px;
+    height: 100px;
+}
+
+.plus-btn {
+    background-color: #25d366;
+}
+
+.plus-btn:hover {
     background-color: #128c7e;
-    /* Adjust hover color as needed */
+}
+
+.return-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .plus-icon {
-    font-size: 24px;
+    font-size: 42px;
     color: #ffffff;
-    padding-bottom: 5px;
+    padding-bottom: 7px;
 }

@@ -105,22 +105,26 @@ const ScopeTable = ({ trainer, setTrainer }) => {
                 {
                     values && values.length > 0 &&
                     values.map((value, index) => {
+                        const calc = parseFloat(value.secondValue) - parseFloat(value.firstValue);
                         return (
                             <h5
                                 style={{
+                                    color: (calc > 0 && trainer.trainingInfo.process === 'מסה') ||
+                                        (calc < 0 && trainer.trainingInfo.process === 'חיטוב')
+                                        ? 'rgb(73, 239, 73)' : trainer.trainingInfo.process !== '' ? 'red' : 'white',
                                     height: '28px',
                                     textAlign: 'right',
                                     visibility: value.firstValue === '' || value.secondValue === '' ?
-                                        'hidden' : ''
+                                        'hidden' : '',
                                 }}
                                 key={index}
                                 dir='auto'
                             >
                                 {
-                                    parseFloat(value.secondValue) - parseFloat(value.firstValue) > 0 ?
-                                        `+${parseFloat(value.secondValue) - parseFloat(value.firstValue)}`
+                                    calc > 0 ?
+                                        `+${calc}`
                                         :
-                                        `${parseFloat(value.secondValue) - parseFloat(value.firstValue)}`
+                                        `${calc}`
                                 }
                             </h5>
                         );
