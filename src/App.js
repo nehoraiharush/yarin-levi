@@ -34,7 +34,7 @@ function App() {
       />
       <TrainerProvider>
 
-        <BrowserRouter> {/* basename={`${APPNAME}`}>*/}
+        <BrowserRouter basename={`${APPNAME}`}>
           <Routes>
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
