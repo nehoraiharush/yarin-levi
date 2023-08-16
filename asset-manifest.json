@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.ab0fe1d6.css",
-    "main.js": "/static/js/main.ba6e1b07.js",
+    "main.js": "/static/js/main.9dece93a.js",
     "static/media/logo3.png": "/static/media/logo3.c9dfe157946b3fbc842b.png",
     "static/media/gymPhoto-barbel-bg.jpeg": "/static/media/gymPhoto-barbel-bg.92eee14f6479dfb266c9.jpeg",
     "static/media/gymPhoto-dumbell-bg.jpeg": "/static/media/gymPhoto-dumbell-bg.4cca14f6607229500c2d.jpeg",
     "static/media/avatar.png": "/static/media/avatar.2d95954b101df70e7b65.png",
     "index.html": "/index.html",
     "main.ab0fe1d6.css.map": "/static/css/main.ab0fe1d6.css.map",
-    "main.ba6e1b07.js.map": "/static/js/main.ba6e1b07.js.map"
+    "main.9dece93a.js.map": "/static/js/main.9dece93a.js.map"
   },
   "entrypoints": [
     "static/css/main.ab0fe1d6.css",
-    "static/js/main.ba6e1b07.js"
+    "static/js/main.9dece93a.js"
   ]
 }
