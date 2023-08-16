@@ -41,9 +41,9 @@ const Login = () => {
             });
             try {
                 const userResponse = await signInWithEmailAndPassword(auth, `${userNameRef.current.value.replace(' ', '%')}@gmail.com`, passwordRef.current.value);
-                localStorage.setItem(USERID, userResponse.user.uid);
+                // localStorage.setItem(USERID, userResponse.user.uid);
                 const name = userResponse.user.email.split('@')[0].replace('%', ' ')
-                localStorage.setItem(USERNAME, name)
+                // localStorage.setItem(USERNAME, name)
                 if (name === 'ירין לוי') {
                     navigate(`../all-trainers`);
                 }

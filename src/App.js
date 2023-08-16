@@ -11,7 +11,6 @@ import Editor from './screens/Editor.js';
 import TrainersCards from './screens/TrainersCards.js';
 import NotFoundPage from './screens/NotFoundPage.js';
 import TrainerDashboard from './screens/TrainerDashboard.js';
-import { UserProvider } from './components/UserContext.js';
 import { ToastContainer, Zoom } from 'react-toastify';
 
 export const APPNAME = '/yarin-levi'

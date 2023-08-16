@@ -30,8 +30,8 @@ const TrainerCard = ({ trainer, id }) => {
                             src={require('../assets/avatar.png')}
                             alt='profile image'
                             style={{
-                                height: '13vw',
-                                width: '13vw',
+                                height: '12vw',
+                                width: '12vw',
                                 borderRadius: '50%'
                             }}
                         />

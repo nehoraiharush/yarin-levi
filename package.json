@@ -2,7 +2,7 @@
   "name": "trainer-web",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://nehoraiharush.github.io/yarin-levi/",
+  "homepage": "https://nehoraiharush.github.io",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -24,7 +24,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
-    "build": "react-scripts build PUBLIC_URL=/yarin-levi",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
