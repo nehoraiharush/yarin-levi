@@ -79,7 +79,6 @@ const Editor = () => {
 
     useEffect(() => {
         if (hasChanged) {
-            console.log("BEFORE handleDispatch");
             handleDispatch();
         }
     }, [hasChanged])

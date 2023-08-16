@@ -48,8 +48,6 @@ const ScopeTable = ({ trainer, setTrainer }) => {
         });
     }
 
-    // console.log(dates)
-
     return (
         <div style={{ display: 'flex', gap: '10px' }} >
             <div style={{ display: 'flex', flexDirection: 'column' }}>

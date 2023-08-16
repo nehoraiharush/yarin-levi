@@ -14,6 +14,7 @@ import TrainerDashboard from './screens/TrainerDashboard.js';
 import { ToastContainer, Zoom } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import Rectangle from './components/Rectangle.js';
 
 export const APPNAME = '/yarin-levi'
 
@@ -51,6 +52,7 @@ function App() {
         </BrowserRouter>
 
       </TrainerProvider>
+      <Rectangle />
     </div>
   );
 }

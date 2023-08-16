@@ -8,7 +8,6 @@ const TrainerCard = ({ trainer, id }) => {
     const navigate = useNavigate();
 
     const toTrainerDash = () => {
-        console.log("CARD", id)
         navigate(`../trainer-dashboard/${id}`, { state: { docId: trainer.docId } });
     }
 

@@ -40,7 +40,6 @@ export const useTrainerContext = () => {
 // Create the TrainerProvider component to wrap the entire application with the context
 export const TrainerProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    console.log('Provider')
     return (
         <TrainerContext.Provider value={{ state, dispatch }}>
             {children}

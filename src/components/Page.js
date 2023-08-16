@@ -27,7 +27,7 @@ const TrainingPage = () => {
 
     const { state } = useLocation();
     const docId = state?.docId;
-    console.log(docId);
+
     const getData = async () => {
         if (docId) {
             const data = await getDoc(doc(db, 'trainers', docId))

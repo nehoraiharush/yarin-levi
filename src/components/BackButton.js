@@ -6,7 +6,7 @@ const BackButton = () => {
     const navigate = useNavigate();
     return (
         <div className="floating-button return-btn" style={{ display: 'flex', flexDirection: 'column', }} onClick={() => navigate('/all-trainers')}>
-            <IoIosArrowDropleft size={'lg'} />
+            <IoIosArrowDropleft size={30} />
             <p style={{ textAlign: 'center' }}>למסך המתאמנים</p>
         </div>
     )

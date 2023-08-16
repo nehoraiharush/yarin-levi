@@ -26,12 +26,13 @@ const Weight = ({ trainer, setTrainer }) => {
                     name='weight'
                     onChange={handleChange}
                     style={{
-                        height: '150px',
-                        width: '135px',
+                        height: '195px',
+                        width: '185px',
                         fontSize: '5em',
                         fontWeight: '500',
                         background: 'none',
-                        border: 'none',
+                        border: 'transparent',
+                        borderRadius: '10px',
                         color: 'white',
                         textAlign: 'center'
                     }}

@@ -41,7 +41,6 @@ export const UserProvider = ({ children }) => {
 
     }, [user])
 
-    console.log(auth?.currentUser?.email)
     return (
         <UserContext.Provider value={{ user, dispatchUser }}>
             <ToastContainer

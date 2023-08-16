@@ -1,0 +1,21 @@
+.rectangle {
+    position: fixed;
+    bottom: 0px;
+    left: -200px;
+    background: #CCCCCC;
+    height: 90px;
+    width: 650px;
+    transform: rotate(-140deg);
+    z-index: -1;
+}
+
+.rectangle2 {
+    position: fixed;
+    bottom: 0px;
+    right: -200px;
+    background: #CCCCCC;
+    height: 90px;
+    width: 650px;
+    transform: rotate(140deg);
+    z-index: -1;
+}
