@@ -13,6 +13,8 @@ import NotFoundPage from './screens/NotFoundPage.js';
 import TrainerDashboard from './screens/TrainerDashboard.js';
 import { ToastContainer, Zoom } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
+
 export const APPNAME = '/yarin-levi'
 
 
