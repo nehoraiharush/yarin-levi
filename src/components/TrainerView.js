@@ -76,7 +76,7 @@ const TrainerView = ({ toggleSidebar, id, trainer, setTrainer }) => {
                     <>
                         {
                             hasChanged ?
-                                <Row style={{ display: 'grid', placeItems: 'center', paddingTop: '20px' }} >
+                                <Row style={{ top: '0', position: 'sticky', display: 'grid', placeItems: 'center', paddingTop: '20px' }} >
                                     {
                                         !state?.isLoading ?
                                             <Button
