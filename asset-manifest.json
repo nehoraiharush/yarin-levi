@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/yarin-levi/static/css/main.c62c011b.css",
-    "main.js": "/yarin-levi/static/js/main.13f2e71b.js",
+    "main.css": "/yarin-levi/static/css/main.f366f3cf.css",
+    "main.js": "/yarin-levi/static/js/main.af33f7ca.js",
     "static/media/logo3.png": "/yarin-levi/static/media/logo3.c9dfe157946b3fbc842b.png",
     "static/media/gymPhoto-barbel-bg.jpeg": "/yarin-levi/static/media/gymPhoto-barbel-bg.92eee14f6479dfb266c9.jpeg",
     "static/media/gymPhoto-dumbell-bg.jpeg": "/yarin-levi/static/media/gymPhoto-dumbell-bg.4cca14f6607229500c2d.jpeg",
     "static/media/avatar.png": "/yarin-levi/static/media/avatar.2d95954b101df70e7b65.png",
     "index.html": "/yarin-levi/index.html",
-    "main.c62c011b.css.map": "/yarin-levi/static/css/main.c62c011b.css.map",
-    "main.13f2e71b.js.map": "/yarin-levi/static/js/main.13f2e71b.js.map"
+    "main.f366f3cf.css.map": "/yarin-levi/static/css/main.f366f3cf.css.map",
+    "main.af33f7ca.js.map": "/yarin-levi/static/js/main.af33f7ca.js.map"
   },
   "entrypoints": [
-    "static/css/main.c62c011b.css",
-    "static/js/main.13f2e71b.js"
+    "static/css/main.f366f3cf.css",
+    "static/js/main.af33f7ca.js"
   ]
 }
