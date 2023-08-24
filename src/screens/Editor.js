@@ -11,28 +11,31 @@ import { toast } from "react-toastify";
 import { SETLOADING, useTrainerContext } from "../components/TrainerContexts";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import BackButton from "../components/BackButton";
 
 const Editor = () => {
+
     const [page, setPage] = useState(new Page("", 1));
     const [trainer, setTrainer] = useState(null);
     const [hasChanged, setChange] = useState(false);
+
     const tinymce = useRef(null);
 
     const { state, dispatch } = useTrainerContext();
+    const { id } = useParams();
+
     const stateLoc = useLocation().state;
-    const docId = stateLoc?.docId;
     const type = stateLoc?.type
 
     const getData = async () => {
-        const data = await getDoc(doc(db, 'trainers', docId))
-        setTrainer({ ...data.data(), docId });
+        const data = await getDoc(doc(db, 'trainers', id))
+        setTrainer({ ...data.data() });
     }
 
     //Getting the trainer info
     useEffect(() => {
-        if (docId) getData();
+        if (id) getData();
     }, []);
 
     //setting the page first value after finding the trainer info
@@ -53,10 +56,9 @@ const Editor = () => {
                     isLoading: true
                 }
             });
-            const trainerDoc = doc(db, 'trainers', trainer.docId);
-            const { docId, ...updatedData } = trainer
+            const trainerDoc = doc(db, 'trainers', trainer.id);
             await updateDoc(trainerDoc, {
-                ...updatedData
+                ...trainer
             })
             setChange(false);
 
@@ -129,7 +131,7 @@ const Editor = () => {
                                             </Button>
                                             <Link className='nav-link'
                                                 to={`../training-info/${trainer.id}`}
-                                                state={{ docId: trainer.docId }}
+                                                state={{ type: type }}
                                             >
                                                 תכנית אימונים
                                             </Link>
@@ -147,6 +149,7 @@ const Editor = () => {
                                     onInit={(evt, editor) => tinymce.current = editor}
                                     apiKey="6yn9o7h95pny6znn5j7a0fijprxkz19cd4mla2zidi5teecp"
                                     initialValue={page.getContent()}
+
                                     init={{
                                         branding: false,
                                         height: 1500,

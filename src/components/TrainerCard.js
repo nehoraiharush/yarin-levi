@@ -8,7 +8,7 @@ const TrainerCard = ({ trainer, id }) => {
     const navigate = useNavigate();
 
     const toTrainerDash = () => {
-        navigate(`../trainer-dashboard/${id}`, { state: { docId: trainer.docId } });
+        navigate(`../trainer-dashboard/${id}`);
     }
 
     return (
@@ -31,10 +31,13 @@ const TrainerCard = ({ trainer, id }) => {
                             style={{
                                 height: '12vw',
                                 width: '12vw',
-                                borderRadius: '50%'
+                                borderRadius: '50%',
+                                zIndex: '2'
                             }}
                         />
-                        <div className='info' style={{ textAlign: 'center' }}>
+
+                        <div style={{ textAlign: 'center' }}>
+
                             <h2 className='trainer-name'>{trainer.name}</h2>
                             <div className='status-row'>
                                 <span className='circle-status'

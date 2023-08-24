@@ -4,11 +4,11 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import TrainerView from '../components/TrainerView'
 import LoadingSpinner from '../components/Loading'
-import { ISMANAGER, USERID } from './Login'
+import { MANAGERNAME, USERID } from './Login'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { db } from '../firebase/firebaseConfig'
-import { doc, getDoc } from 'firebase/firestore'
+import { collection, getDocs, limit, query, where } from 'firebase/firestore'
 
 import '../style/TrainerCard.css';
 import BackButton from '../components/BackButton'
@@ -17,17 +17,32 @@ const TrainerDashboard = () => {
 
     const navigate = useNavigate();
     const { id } = useParams();
-    const state = useLocation()?.state;
-    const docId = state?.docId
+
+    const trainersDB = collection(db, 'trainers');
 
     const [isOpen, setOpen] = useState('')
-    const [trainer, setTrainer] = useState(null)
+    const [trainer, setTrainer] = useState(null);
 
     const getData = async () => {
-        if (docId) {
-            const data = await getDoc(doc(db, 'trainers', docId))
-            setTrainer({ ...data.data(), docId });
-        }
+        if (id) {
+            try {
+                const q = query(trainersDB, where('id', '==', id), limit(1))
+                const data = await getDocs(q);
+                if (!data.empty) {
+                    const trainerData = data.docs[0].data()
+                    if (trainerData.isManager) {
+                        setTrainer({ ...trainerData });
+                    } else {
+                        const { password, ...restOfData } = trainerData;
+                        setTrainer({ ...restOfData });
+                    }
+                }
+                else toast.error("מתאמן לא נמצא");
+            } catch (error) {
+                toast.error(error.message);
+            }
+
+        } else toast.error("מתאמן לא נמצא");
     }
 
     useEffect(() => {
@@ -45,7 +60,7 @@ const TrainerDashboard = () => {
 
         <div className='dashboard-container' >
             {
-                trainer === null || trainer === undefined || !trainer?.id || !docId ?
+                trainer === null || trainer === undefined || !trainer?.id || !id ?
                     <div onClick={() => setOpen('')} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }} >
                         <LoadingSpinner />
                     </div>

@@ -3,9 +3,8 @@ import TrainerCard from '../components/TrainerCard';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 
 import { SETLOADING, useTrainerContext } from '../components/TrainerContexts';
-// import { useUserContext } from '../components/UserContext';
 import { useEffect } from 'react';
-import { ISMANAGER, USERID, USERNAME } from './Login';
+import { USERID, USERNAME } from './Login';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
@@ -34,8 +33,7 @@ export default function TrainersCards() {
             const trainers = await getDocs(trainersDB);
             const trainersFiltered = trainers.docs.map((doc) => (
                 {
-                    ...doc.data(),
-                    docId: doc.id
+                    ...doc.data()
                 }
             ));
             if (trainers?.docs) setTrainers(trainersFiltered);
@@ -68,7 +66,7 @@ export default function TrainersCards() {
     };
 
 
-    const filteredActiveTrainers = trainersList.filter((trainer) => trainer.status === 'active').filter((trainer) =>
+    const filteredActiveTrainers = trainersList.filter((trainer) => trainer.status === 'active' && !trainer.isManager).filter((trainer) =>
         trainer.name.includes(searchQuery)
     );
 
@@ -138,7 +136,7 @@ export default function TrainersCards() {
             </header>
             {
                 !state?.isLoading ?
-                    trainersList.length > 0 ?
+                    trainersList.length > 1 ?
                         Cards()
                         :
                         <Row>

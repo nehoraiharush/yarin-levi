@@ -20,6 +20,14 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
 
     const userConnected = trainer ? true : false;
 
+    const handleLogout = (e) => {
+        localStorage.removeItem(USERID);
+        localStorage.removeItem(USERNAME);
+        if (localStorage.getItem(USERID) && localStorage.getItem(USERNAME))
+            e.preventDefault();
+
+    }
+
     return (
         <div>
             <header className={`toggle-btn-wrapper ${isOpen}`}>
@@ -40,22 +48,23 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
                         {
                             userConnected ?
                                 <div>
-                                    <Link className='nav-link'
+                                    <Link color='red' className='nav-link'
                                         to={`../trainer-dashboard/${trainer.id}`}
-                                        state={{ docId: trainer.docId }}
                                     >
                                         שלום {trainer.name}
                                     </Link>
                                     <Link className='nav-link'
                                         to={`../editor/${trainer.id}`}
-                                        state={{ docId: trainer.docId, type: 'trainingPlan' }}
+                                        state={{ type: 'trainingPlan' }}
                                     >
                                         תכנית אימונים
                                     </Link>
                                     <Link className='nav-link'
                                         to={`../editor/${trainer.id}`}
-                                        state={{ docId: trainer.docId, type: 'nutrition' }}
+                                        state={{ type: 'nutrition' }}
                                     >תפריט תזונה</Link>
+                                    <Link onClick={handleLogout} to={'../login'} className='nav-link'
+                                    >התנתק</Link>
                                 </div>
                                 :
                                 <div>

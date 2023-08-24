@@ -33,25 +33,19 @@
     margin-top: 50%;
 }
 
-.nav-link {
+.nav-link,
+.nav-link:visited {
     color: black;
     padding-top: 15%;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link:has(:visited):hover {
     color: white;
 }
 
 .nav-link:active {
     color: white;
-}
-
-.nav-link-trainerView:hover {
-    color: #A5B0C0 !important;
-}
-
-.nav-link-trainerView:active {
-    color: #A5B0C0;
 }
 
 h1 {

@@ -6,14 +6,15 @@ import Loading from '../components/Loading.js';
 
 //FIREBASE
 import { auth, db } from "../firebase/firebaseConfig";
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { collection, addDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword, signInWithCustomToken, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { collection, addDoc, query, getDocs, where, updateDoc, doc } from "firebase/firestore";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/Login.css';
 // import { useUserContext } from "../components/UserContext";
 import { toast } from "react-toastify";
 import { SETLOADING, useTrainerContext } from "../components/TrainerContexts";
+import { MANAGERNAME, MANAGERPASS } from "./Login";
 
 const initValues = [
     {
@@ -66,12 +67,22 @@ const Signup = () => {
     const trainersDB = collection(db, 'trainers');
 
     const createTrainerData = async (trainer) => {
-        try {
-            const doc = await addDoc(trainersDB, trainer)
-            return doc.id;
-        } catch (error) {
-            toast.error(error.message);
-        }
+        addDoc(trainersDB, trainer)
+            .then(async document => {
+                console.log(document.id);
+                await updateDoc(doc(db, 'trainers', document.id), {
+                    id: document.id,
+                    ...trainer
+
+                })
+                toast.success(`${trainer.name} נרשם בהצלחה`);
+                navigate(`../trainer-dashboard/${document.id}`);
+            })
+            .catch(err => {
+                toast.error(err.message)
+            })
+
+
     }
 
     const handleSubmit = async (e) => {
@@ -87,29 +98,31 @@ const Signup = () => {
                     }
                 });
                 try {
-                    const userResponse = await createUserWithEmailAndPassword(auth, `${userNameRef.current.value.replace(' ', '%')}@gmail.com`, passwordRef.current.value);
-                    const name = userResponse.user.email.split('@')[0].replace('%', ' ')
-
-                    const docData = {
-                        id: userResponse.user.uid,
-                        name: name,
-                        status: 'active',
-                        age: 0,
-                        isManager: false,
-                        trainingInfo: {
-                            hasValues: false,
-                            dates: [currentDate, currentDate],
-                            values: initValues,
-                            process: '',
-                            weight: '',
-                            trend: '',
-                            trainingPlan: `${name} תכנית אימון`,
-                            nutrition: `${name} תוכנית תזונה`
+                    const name = userNameRef.current.value
+                    const q = query(trainersDB, where('name', '==', name))
+                    const data = await getDocs(q);
+                    if (!data.empty) {
+                        toast.error('משתמש קיים')
+                    } else {
+                        const docData = {
+                            name,
+                            password: passwordRef.current.value,
+                            status: 'active',
+                            age: 0,
+                            isManager: false,
+                            trainingInfo: {
+                                hasValues: false,
+                                dates: [currentDate, currentDate],
+                                values: initValues,
+                                process: '',
+                                weight: '',
+                                trend: '',
+                                trainingPlan: `${name} תכנית אימון`,
+                                nutrition: `${name} תוכנית תזונה`
+                            }
                         }
+                        await createTrainerData(docData);
                     }
-                    const docId = await createTrainerData(docData);
-                    toast.success(`${name} נרשם בהצלחה`);
-                    navigate(`../trainer-dashboard/${userResponse.user.uid}`, { state: { docId } });
                 } catch (error) {
                     toast.error(error.message);
                 } finally {

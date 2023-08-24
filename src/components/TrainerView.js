@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Button, Col, Container, Row, Nav } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import Weight from './Weight';
 import Procces from './Procces';
 import { useTrainerContext, SETLOADING } from './TrainerContexts';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { BsTrash } from 'react-icons/bs'
 
 
 import '../style/sidebar.css'
@@ -12,21 +13,22 @@ import LoadingSpinner from './Loading';
 import ScopeTable from './ScopeTable';
 import { toast } from 'react-toastify';
 import { db } from '../firebase/firebaseConfig';
+import { useNavigate } from 'react-router-dom';
 
-const TrainerView = ({ toggleSidebar, id, trainer, setTrainer }) => {
+const TrainerView = ({ toggleSidebar, trainer, setTrainer }) => {
 
     const { state, dispatch } = useTrainerContext();
     const [hasChanged, setChange] = useState(false);
+    const navigate = useNavigate();
 
     const dispatchChanges = async () => {
         try {
-            const trainerDoc = doc(db, 'trainers', trainer.docId);
-            const { docId, ...updatedData } = trainer
+            const trainerDoc = doc(db, 'trainers', trainer.id);
             await updateDoc(trainerDoc, {
-                ...updatedData
+                ...trainer
             })
         } catch (error) {
-            toast.error('אירעה שגיאה בשמירת השינויים');
+            throw new Error();
         }
     }
 
@@ -57,6 +59,18 @@ const TrainerView = ({ toggleSidebar, id, trainer, setTrainer }) => {
                         isLoading: false
                     }
                 });
+            }
+        }
+    }
+
+    const handleDelete = async () => {
+        if (window.confirm(`האם למחוק את ${trainer.name}?`)) {
+            try {
+                await deleteDoc(doc(db, 'trainers', trainer.id))
+                toast.success(`${trainer.name} נמחק בהצלחה`)
+                navigate('../all-trainers')
+            } catch (error) {
+                toast.error(error.message);
             }
         }
     }
@@ -106,7 +120,10 @@ const TrainerView = ({ toggleSidebar, id, trainer, setTrainer }) => {
                                     justifyContent: 'center',
                                 }}
                             >
-                                <h2>{trainer.name}</h2>
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <h2>{trainer.name}</h2>
+                                    <BsTrash onClick={handleDelete} style={{ marginRight: '5px', cursor: 'pointer' }} size={30} color='#EF233C' />
+                                </div>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
                                     <span
                                         className='circle-status'
@@ -145,26 +162,28 @@ const TrainerView = ({ toggleSidebar, id, trainer, setTrainer }) => {
                                         />
                                     </div>
                                 </div>
-                                <h4>גיל:
-                                    <input
-                                        onChange={(e) => changeTrainerData({
-                                            ...trainer,
-                                            age: parseInt(e.target.value)
-                                        })}
-                                        style={{
-                                            width: '80px',
-                                            background: 'none',
-                                            border: 'none',
-                                            color: 'white',
-                                            textAlign: 'right',
-                                            paddingRight: '5px'
-                                        }}
-                                        dir='auto'
-                                        value={trainer.age ? trainer.age : 0}
-                                    />
-                                </h4>
-                                <h4>מטרה: </h4>
-                                <h5>משהו שהבטחתי לעצמי</h5>
+                                <div style={{ textAlign: 'right', color: 'white' }}>
+                                    <h4>גיל:
+                                        <input
+                                            onChange={(e) => changeTrainerData({
+                                                ...trainer,
+                                                age: parseInt(e.target.value)
+                                            })}
+                                            style={{
+                                                width: '80px',
+                                                background: 'none',
+                                                border: 'none',
+                                                color: 'white',
+                                                textAlign: 'right',
+                                                paddingRight: '5px'
+                                            }}
+                                            dir='auto'
+                                            value={trainer.age ? trainer.age : 0}
+                                        />
+                                    </h4>
+                                    <h4>מטרה: </h4>
+                                    <h5>משהו שהבטחתי לעצמי</h5>
+                                </div>
                             </Col>
                             <Col lg={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <Weight trainer={trainer} setTrainer={changeTrainerData} />

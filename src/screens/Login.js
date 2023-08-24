@@ -4,19 +4,20 @@ import YarinLevi from "../components/YarinLevi";
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Loading from '../components/Loading.js';
 import { toast } from "react-toastify";
-// import { SETUSER, useUserContext } from "../components/UserContext";
 
 //FIREBASE
-import { auth } from "../firebase/firebaseConfig";
+import { auth, db } from "../firebase/firebaseConfig";
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/Login.css';
 import { SETLOADING, useTrainerContext } from "../components/TrainerContexts";
+import { collection, getDocs, limit, query, where } from "firebase/firestore";
 
 export const USERID = 'userId';
 export const USERNAME = 'username';
-export const ISMANAGER = 'isManager';
+export const MANAGERNAME = 'ירין לוי'
+export const MANAGERPASS = 'yarin0584560107'
 
 const Login = () => {
 
@@ -24,8 +25,7 @@ const Login = () => {
 
     const userNameRef = useRef();
     const passwordRef = useRef();
-
-    // const { user, dispatchUser } = useUserContext();
+    const trainersDB = collection(db, 'trainers');
 
     const { state, dispatch } = useTrainerContext();
 
@@ -40,17 +40,23 @@ const Login = () => {
                 }
             });
             try {
-                const userResponse = await signInWithEmailAndPassword(auth, `${userNameRef.current.value.replace(' ', '%')}@gmail.com`, passwordRef.current.value);
-                // localStorage.setItem(USERID, userResponse.user.uid);
-                const name = userResponse.user.email.split('@')[0].replace('%', ' ')
-                // localStorage.setItem(USERNAME, name)
-                if (name === 'ירין לוי') {
-                    navigate(`../all-trainers`);
-                }
+                const name = userNameRef.current.value
+                const q = query(trainersDB, where('name', '==', name), limit(1))
+                const data = await getDocs(q);
 
-                toast.success('שלום ' + userResponse.user.email.split('@')[0].replace('%', ' '));
+                if (!data.empty) {
+                    localStorage.removeItem(USERID);
+                    localStorage.removeItem(USERNAME);
+                    localStorage.setItem(USERID, data.docs[0].id);
+                    localStorage.setItem(USERNAME, name)
+                    if (name === MANAGERNAME) navigate(`../all-trainers`);
+                    else navigate(`../trainer-dashboard/${data.docs[0].id}`);
+                    toast.success('שלום ' + name);
+                } else {
+                    toast.error('משתמש לא נמצא');
+                }
             } catch (error) {
-                toast.error('משתמש לא נמצא');
+                toast.error(error.message);
             }
             finally {
                 dispatch({
@@ -129,7 +135,6 @@ const Login = () => {
                                                         onClick={async () => {
                                                             localStorage.removeItem(USERID);
                                                             localStorage.removeItem(USERNAME)
-                                                            localStorage.removeItem(ISMANAGER);
                                                             await signOut(auth)
                                                             toast.success('התנתקת בהצלחה')
                                                         }} >התנתק</Button>
