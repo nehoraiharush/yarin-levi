@@ -5,13 +5,11 @@ import YarinLevi from "../components/YarinLevi";
 import Loading from '../components/Loading.js';
 
 //FIREBASE
-import { auth, db } from "../firebase/firebaseConfig";
-import { createUserWithEmailAndPassword, signInWithCustomToken, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { collection, addDoc, query, getDocs, where, updateDoc, doc } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
+import { collection, addDoc, getDocs, updateDoc, doc } from "firebase/firestore";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/Login.css';
-// import { useUserContext } from "../components/UserContext";
 import { toast } from "react-toastify";
 import { SETLOADING, useTrainerContext } from "../components/TrainerContexts";
 import { MANAGERNAME, MANAGERPASS } from "./Login";
@@ -98,30 +96,42 @@ const Signup = () => {
                     }
                 });
                 try {
-                    const name = userNameRef.current.value
-                    const q = query(trainersDB, where('name', '==', name))
-                    const data = await getDocs(q);
+                    const name = userNameRef.current.value;
+                    const data = await getDocs(trainersDB);
                     if (!data.empty) {
-                        toast.error('משתמש קיים')
-                    } else {
-                        const docData = {
-                            name,
-                            password: passwordRef.current.value,
-                            status: 'active',
-                            age: 0,
-                            isManager: false,
-                            trainingInfo: {
-                                hasValues: false,
-                                dates: [currentDate, currentDate],
-                                values: initValues,
-                                process: '',
-                                weight: '',
-                                trend: '',
-                                trainingPlan: `${name} תכנית אימון`,
-                                nutrition: `${name} תוכנית תזונה`
+                        let flag = false;
+                        if (data.docs.length > 1) {
+                            for (const doc of data.docs) {
+                                console.log(doc.data().name.replace(' ', ''));
+                                if (doc.data().name.replace(' ', '') === name.replace(' ', '')) {
+                                    toast.error('משתמש קיים')
+                                    flag = true;
+                                    break;
+                                }
                             }
                         }
-                        await createTrainerData(docData);
+                        if (!flag) {
+                            const docData = {
+                                name,
+                                password: passwordRef.current.value,
+                                status: 'active',
+                                age: 0,
+                                isManager: false,
+                                trainingInfo: {
+                                    hasValues: false,
+                                    dates: [currentDate, currentDate],
+                                    values: initValues,
+                                    process: '',
+                                    weight: '',
+                                    trend: '',
+                                    trainingPlan: `${name} תכנית אימון`,
+                                    nutrition: `${name} תוכנית תזונה`
+                                }
+                            }
+                            await createTrainerData(docData);
+                        }
+                    } else {
+                        toast.warn('מתאמנים לא נמצאו')
                     }
                 } catch (error) {
                     toast.error(error.message);

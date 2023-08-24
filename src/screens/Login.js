@@ -6,8 +6,7 @@ import Loading from '../components/Loading.js';
 import { toast } from "react-toastify";
 
 //FIREBASE
-import { auth, db } from "../firebase/firebaseConfig";
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { db } from "../firebase/firebaseConfig";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/Login.css';
@@ -127,18 +126,8 @@ const Login = () => {
                                             state?.isLoading ?
                                                 <Loading />
                                                 :
-                                                <div>
-                                                    <Button className="signup-btn" variant="btn btn-lg" type="submit">התחבר</Button>
-                                                    <Button
-                                                        className="signup-btn"
-                                                        variant="btn btn-lg"
-                                                        onClick={async () => {
-                                                            localStorage.removeItem(USERID);
-                                                            localStorage.removeItem(USERNAME)
-                                                            await signOut(auth)
-                                                            toast.success('התנתקת בהצלחה')
-                                                        }} >התנתק</Button>
-                                                </div>
+                                                <Button className="signup-btn" variant="btn btn-lg" type="submit">התחבר</Button>
+
                                         }
                                     </Form.Group>
                                 </Col>

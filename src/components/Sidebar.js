@@ -5,7 +5,8 @@ import '../style/sidebar.css';
 import { IoMdMenu, IoMdClose } from "react-icons/io";
 import YarinLevi from './YarinLevi.js'
 import { Link, useNavigate } from 'react-router-dom';
-import { USERID, USERNAME } from '../screens/Login';
+import { MANAGERNAME, USERID, USERNAME } from '../screens/Login';
+import { toast } from 'react-toastify';
 
 
 const MESSAGE = 'אני גם רוצה להתחיל את השינוי שלי💪'
@@ -19,12 +20,15 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
     };
 
     const userConnected = trainer ? true : false;
+    const managerConeected = localStorage.getItem(USERNAME) === MANAGERNAME ? true : false;
 
     const handleLogout = (e) => {
+        const name = localStorage.getItem(USERNAME)
         localStorage.removeItem(USERID);
         localStorage.removeItem(USERNAME);
         if (localStorage.getItem(USERID) && localStorage.getItem(USERNAME))
             e.preventDefault();
+        toast.success(`${name} התנתק בהצלחה`)
 
     }
 
@@ -54,14 +58,12 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
                                         שלום {trainer.name}
                                     </Link>
                                     <Link className='nav-link'
-                                        to={`../editor/${trainer.id}`}
-                                        state={{ type: 'trainingPlan' }}
+                                        to={`../${managerConeected ? 'editor' : 'training-info'}/${trainer.id}/trainingPlan`}
                                     >
                                         תכנית אימונים
                                     </Link>
                                     <Link className='nav-link'
-                                        to={`../editor/${trainer.id}`}
-                                        state={{ type: 'nutrition' }}
+                                        to={`../${managerConeected ? 'editor' : 'training-info'}/${trainer.id}/nutrition`}
                                     >תפריט תזונה</Link>
                                     <Link onClick={handleLogout} to={'../login'} className='nav-link'
                                     >התנתק</Link>

@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import TrainerView from '../components/TrainerView'
 import LoadingSpinner from '../components/Loading'
-import { MANAGERNAME, USERID } from './Login'
+import { MANAGERNAME, USERID, USERNAME } from './Login'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { db } from '../firebase/firebaseConfig'
@@ -22,6 +22,7 @@ const TrainerDashboard = () => {
 
     const [isOpen, setOpen] = useState('')
     const [trainer, setTrainer] = useState(null);
+    const disable = localStorage.getItem(USERNAME) === MANAGERNAME ? false : true;
 
     const getData = async () => {
         if (id) {
@@ -66,11 +67,11 @@ const TrainerDashboard = () => {
                     </div>
                     :
                     <>
-                        <TrainerView setTrainer={setTrainer} trainer={trainer} toggleSidebar={setOpen} id={id} />
+                        <TrainerView disable={disable} setTrainer={setTrainer} trainer={trainer} toggleSidebar={setOpen} id={id} />
                         <Sidebar trainer={trainer} isOpen={isOpen} setOpen={setOpen} />
                     </>
             }
-            <BackButton />
+            {!disable && <BackButton />}
         </div>
     )
 }

@@ -14,8 +14,9 @@ import ScopeTable from './ScopeTable';
 import { toast } from 'react-toastify';
 import { db } from '../firebase/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
+import { MANAGERNAME, USERNAME } from '../screens/Login';
 
-const TrainerView = ({ toggleSidebar, trainer, setTrainer }) => {
+const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
 
     const { state, dispatch } = useTrainerContext();
     const [hasChanged, setChange] = useState(false);
@@ -120,9 +121,13 @@ const TrainerView = ({ toggleSidebar, trainer, setTrainer }) => {
                                     justifyContent: 'center',
                                 }}
                             >
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', zIndex: '4' }}>
                                     <h2>{trainer.name}</h2>
-                                    <BsTrash onClick={handleDelete} style={{ marginRight: '5px', cursor: 'pointer' }} size={30} color='#EF233C' />
+                                    {!disable && <BsTrash
+                                        onClick={handleDelete}
+                                        style={{ marginRight: '5px', cursor: 'pointer' }}
+                                        size={30} color='#EF233C'
+                                    />}
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
                                     <span
@@ -140,13 +145,14 @@ const TrainerView = ({ toggleSidebar, trainer, setTrainer }) => {
                                     <style>
                                         {`
 
-                                    .form-range::-webkit-slider-runnable-track {
-                                        background-color: ${trainer.status === 'active' ? 'rgb(73, 239, 73)' : trainer.status === 'pause' ? 'yellow' : 'red'};
-                                    }
+                                            .form-range::-webkit-slider-runnable-track {
+                                                z-index: 4;
+                                                background-color: ${trainer.status === 'active' ? 'rgb(73, 239, 73)' : trainer.status === 'pause' ? 'yellow' : 'red'};
+                                            }
                                         `}
                                     </style>
 
-                                    <div style={{ marginRight: '10px', marginBottom: '3px' }}>
+                                    {!disable && <div style={{ marginRight: '10px', marginBottom: '3px' }}>
                                         <input
                                             className={`form-range status-range ${trainer.status}`}
                                             onChange={(e) => {
@@ -160,11 +166,12 @@ const TrainerView = ({ toggleSidebar, trainer, setTrainer }) => {
                                             min={0}
                                             max={2}
                                         />
-                                    </div>
+                                    </div>}
                                 </div>
                                 <div style={{ textAlign: 'right', color: 'white' }}>
                                     <h4>גיל:
                                         <input
+                                            disabled={disable}
                                             onChange={(e) => changeTrainerData({
                                                 ...trainer,
                                                 age: parseInt(e.target.value)
@@ -186,10 +193,10 @@ const TrainerView = ({ toggleSidebar, trainer, setTrainer }) => {
                                 </div>
                             </Col>
                             <Col lg={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <Weight trainer={trainer} setTrainer={changeTrainerData} />
+                                <Weight disable={disable} trainer={trainer} setTrainer={changeTrainerData} />
                             </Col>
                             <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <Procces trainer={trainer} setTrainer={changeTrainerData} />
+                                <Procces disable={disable} trainer={trainer} setTrainer={changeTrainerData} />
                             </Col>
                         </Row>
                         <Row style={{ marginTop: '40px', padding: '10px' }}>
@@ -198,8 +205,8 @@ const TrainerView = ({ toggleSidebar, trainer, setTrainer }) => {
                                 {
                                     trainer.trainingInfo.hasValues ?
                                         <>
-                                            <ScopeTable trainer={trainer} setTrainer={changeTrainerData} />
-                                            <Button
+                                            <ScopeTable disable={disable} trainer={trainer} setTrainer={changeTrainerData} />
+                                            {!disable && <Button
                                                 onClick={
                                                     () => {
                                                         changeTrainerData({
@@ -215,10 +222,10 @@ const TrainerView = ({ toggleSidebar, trainer, setTrainer }) => {
                                                 style={{ width: '60%' }}
                                             >
                                                 הסר היקפים מהתוכנית
-                                            </Button>
+                                            </Button>}
                                         </>
                                         :
-                                        <Button
+                                        !disable && <Button
                                             onClick={
                                                 () => {
                                                     changeTrainerData({

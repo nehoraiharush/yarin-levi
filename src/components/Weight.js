@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Weight = ({ trainer, setTrainer }) => {
+const Weight = ({ trainer, setTrainer, disable }) => {
 
     const handleChange = (e) => {
         const varName = e.target.name
@@ -23,6 +23,7 @@ const Weight = ({ trainer, setTrainer }) => {
         }}>
             <p style={{ margin: '0' }} dir='rtl'>
                 <input
+                    disabled={disable}
                     name='weight'
                     onChange={handleChange}
                     style={{
@@ -42,6 +43,7 @@ const Weight = ({ trainer, setTrainer }) => {
                 {/* <span style={{ fontSize: '5em', fontWeight: '500', }}>&nbsp;{trainer.trainingInfo.weight}</span> */}
                 <sub style={{ fontSize: '25px', fontWeight: '500' }}>
                     <input
+                        disabled={disable}
                         name='trend'
                         onChange={handleChange}
                         style={{

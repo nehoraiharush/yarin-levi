@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Procces = ({ trainer, setTrainer }) => {
+const Procces = ({ trainer, setTrainer, disable }) => {
 
     const handleChange = (e) => {
         setTrainer({
@@ -31,6 +31,7 @@ const Procces = ({ trainer, setTrainer }) => {
                 בתהליך:
             </div>
             <input
+                disabled={disable}
                 onChange={handleChange}
                 style={{
                     width: '170px',

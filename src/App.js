@@ -42,8 +42,8 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/' element={<HomeScreen />} />
-            <Route path='/training-info/:id' element={<TrainingPage />} />
-            <Route path='/editor/:id' element={<Editor />} />
+            <Route path='/training-info/:id/:type' element={<TrainingPage />} />
+            <Route path='/editor/:id/:type' element={<Editor />} />
             <Route path='/all-trainers' element={<TrainersCards />} />
             <Route path='/trainer-dashboard/:id' element={<TrainerDashboard />} />
 

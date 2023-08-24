@@ -13,20 +13,19 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { Link, useLocation, useParams } from "react-router-dom";
 import BackButton from "../components/BackButton";
+import Sidebar from "../components/Sidebar";
 
 const Editor = () => {
 
     const [page, setPage] = useState(new Page("", 1));
     const [trainer, setTrainer] = useState(null);
     const [hasChanged, setChange] = useState(false);
+    const [isOpen, setOpen] = useState('')
 
     const tinymce = useRef(null);
 
     const { state, dispatch } = useTrainerContext();
-    const { id } = useParams();
-
-    const stateLoc = useLocation().state;
-    const type = stateLoc?.type
+    const { id, type } = useParams();
 
     const getData = async () => {
         const data = await getDoc(doc(db, 'trainers', id))
@@ -46,7 +45,7 @@ const Editor = () => {
             else if (type === 'nutrition')
                 setPage(new Page(trainer.trainingInfo.nutrition, 1));
         }
-    }, [trainer])
+    }, [trainer, type])
 
     const dispatchChanges = async () => {
         try {
@@ -109,101 +108,98 @@ const Editor = () => {
     }
 
     return (
-        <Container style={{ height: "100vh" }}>
-            {
-                trainer === null || trainer === undefined ?
-                    <div style={{ height: '100vh', display: 'grid', placeItems: 'center' }}>
-                        <Spinner style={{ alignSelf: 'center' }} animation="border" />
-                    </div>
-                    :
-                    <div style={{}}>
-                        <Row style={{ ...(state.isLoading ? { marginTop: '20px' } : {}) }}>
-                            <Col style={{ display: 'flex', justifyContent: 'center' }}>
-                                {
-                                    !state.isLoading ?
-                                        <div style={{ width: '100%' }}>
-                                            <Button
-                                                onClick={handleSavingBtn}
-                                                className="signup-btn"
-                                                variant="btn btn-lg"
-                                            >
-                                                שמור שינויים
-                                            </Button>
-                                            <Link className='nav-link'
-                                                to={`../training-info/${trainer.id}`}
-                                                state={{ type: type }}
-                                            >
-                                                תכנית אימונים
-                                            </Link>
-                                        </div>
+        <div>
+            <Container onClick={() => setOpen('')} style={{ height: "100vh" }}>
+                {
+                    trainer === null || trainer === undefined ?
+                        <div style={{ height: '100vh', display: 'grid', placeItems: 'center' }}>
+                            <Spinner style={{ alignSelf: 'center' }} animation="border" />
+                        </div>
+                        :
+                        <div style={{}}>
+                            <Row style={{ ...(state.isLoading ? { marginTop: '20px' } : {}) }}>
+                                <Col style={{ display: 'flex', justifyContent: 'center' }}>
+                                    {
+                                        !state.isLoading ?
+                                            <div style={{ width: '100%' }}>
+                                                <Button
+                                                    onClick={handleSavingBtn}
+                                                    className="signup-btn"
+                                                    variant="btn btn-lg"
+                                                >
+                                                    שמור שינויים
+                                                </Button>
+                                            </div>
 
-                                        :
-                                        <Spinner style={{ alignSelf: 'center' }} animation="border" />
-                                }
+                                            :
+                                            <Spinner style={{ alignSelf: 'center' }} animation="border" />
+                                    }
 
-                            </Col>
-                        </Row>
-                        <Row style={{ height: "100%", marginTop: "50px" }}>
-                            <Col style={{ height: "100%" }}>
-                                <TinyMce
-                                    onInit={(evt, editor) => tinymce.current = editor}
-                                    apiKey="6yn9o7h95pny6znn5j7a0fijprxkz19cd4mla2zidi5teecp"
-                                    initialValue={page.getContent()}
+                                </Col>
+                            </Row>
+                            <Row style={{ height: "100%", marginTop: "50px" }}>
+                                <Col style={{ height: "100%" }}>
+                                    <TinyMce
+                                        onInit={(evt, editor) => tinymce.current = editor}
+                                        apiKey="6yn9o7h95pny6znn5j7a0fijprxkz19cd4mla2zidi5teecp"
+                                        initialValue={page.getContent()}
 
-                                    init={{
-                                        branding: false,
-                                        height: 1500,
-                                        menubar: true,
-                                        resize: false,
-                                        plugins:
-                                            "preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount",
-                                        toolbar:
-                                            "formatselect | bold italic underline strikethrough | forecolor backcolor blockquote | link image media | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | removeformat",
+                                        init={{
+                                            branding: false,
+                                            height: 1500,
+                                            menubar: true,
+                                            resize: false,
+                                            plugins:
+                                                "preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount",
+                                            toolbar:
+                                                "formatselect | bold italic underline strikethrough | forecolor backcolor blockquote | link image media | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | removeformat",
 
-                                        directionality: "auto",
-                                        deprecation_warnings: false,
-                                        image_title: true,
-                                        automatic_uploads: true,
-                                        file_picker_types: 'image media',
-                                        file_picker_callback: (cb, value, meta) => {
-                                            var input = document.createElement('input');
-                                            input.setAttribute('type', 'file');
-                                            input.setAttribute('accept', 'image/*, video/*'); // Allow both image and video files
+                                            directionality: "auto",
+                                            deprecation_warnings: false,
+                                            image_title: true,
+                                            automatic_uploads: true,
+                                            file_picker_types: 'image media',
+                                            file_picker_callback: (cb, value, meta) => {
+                                                var input = document.createElement('input');
+                                                input.setAttribute('type', 'file');
+                                                input.setAttribute('accept', 'image/*, video/*'); // Allow both image and video files
 
-                                            input.onchange = function () {
-                                                var file = this.files[0];
-                                                if (tinymce.current) {
-                                                    var reader = new FileReader();
-                                                    reader.onload = function () {
-                                                        var id = 'blobid' + (new Date()).getTime();
-                                                        var blobCache = tinymce.current.editorUpload.blobCache;
-                                                        var base64 = reader.result.split(',')[1];
-                                                        var blobInfo = blobCache.create(id, file, base64);
-                                                        blobCache.add(blobInfo);
+                                                input.onchange = function () {
+                                                    var file = this.files[0];
+                                                    if (tinymce.current) {
+                                                        var reader = new FileReader();
+                                                        reader.onload = function () {
+                                                            var id = 'blobid' + (new Date()).getTime();
+                                                            var blobCache = tinymce.current.editorUpload.blobCache;
+                                                            var base64 = reader.result.split(',')[1];
+                                                            var blobInfo = blobCache.create(id, file, base64);
+                                                            blobCache.add(blobInfo);
 
-                                                        /* call the callback and populate the Title field with the file name */
-                                                        cb(blobInfo.blobUri(), { title: file.name });
-                                                    };
-                                                    reader.readAsDataURL(file);
-                                                } else toast.error("ERROR: cannot ref tinymce editor")
-                                            };
+                                                            /* call the callback and populate the Title field with the file name */
+                                                            cb(blobInfo.blobUri(), { title: file.name });
+                                                        };
+                                                        reader.readAsDataURL(file);
+                                                    } else toast.error("ERROR: cannot ref tinymce editor")
+                                                };
 
-                                            input.click();
-                                        },
-                                        content_style: `
+                                                input.click();
+                                            },
+                                            content_style: `
                             body { 
                                 font-family:Helvetica,Arial,sans-serif; f
                                 ont-size:14px;
                             }
                             `
-                                    }}
-                                />
-                            </Col>
-                        </Row>
-                    </div>
-            }
-            <BackButton />
-        </Container >
+                                        }}
+                                    />
+                                </Col>
+                            </Row>
+                        </div>
+                }
+                <BackButton />
+            </Container >
+            <Sidebar trainer={trainer} isOpen={isOpen} setOpen={setOpen} />
+        </div>
     );
 };
 

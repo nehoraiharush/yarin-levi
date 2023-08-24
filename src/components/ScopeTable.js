@@ -14,7 +14,7 @@ const parameters = [
 ]
 
 
-const ScopeTable = ({ trainer, setTrainer }) => {
+const ScopeTable = ({ trainer, setTrainer, disable }) => {
 
     const dates = trainer?.trainingInfo.dates;
     const values = trainer?.trainingInfo.values
@@ -67,7 +67,7 @@ const ScopeTable = ({ trainer, setTrainer }) => {
                         {
                             dates.map((date, index) => (
                                 <th key={index}>
-                                    <input onChange={(e) => { handleDateChange(index, e.target.value) }} value={date} style={{ border: 'none', width: '100%' }} />
+                                    <input disabled={true} onChange={(e) => { handleDateChange(index, e.target.value) }} value={date} style={{ border: 'none', width: '100%' }} />
                                 </th>
                             ))
                         }
@@ -80,6 +80,7 @@ const ScopeTable = ({ trainer, setTrainer }) => {
                             <tr key={index}>
                                 <td>
                                     <input
+                                        disabled={disable}
                                         onChange={(e) => handleFirstInfoChange(index, e.target.value)}
                                         value={row.firstValue}
                                         style={{ border: 'none', width: '100%' }}
@@ -87,6 +88,7 @@ const ScopeTable = ({ trainer, setTrainer }) => {
                                 </td>
                                 <td>
                                     <input
+                                        disabled={disable}
                                         onChange={(e) => { handleSecondInfoChange(index, e.target.value) }}
                                         value={row.secondValue}
                                         style={{ border: 'none', width: '100%' }}

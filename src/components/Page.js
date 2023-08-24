@@ -13,6 +13,8 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import LoadingSpinner from "./Loading";
 import BackButton from "./BackButton";
+import { MANAGERNAME, USERNAME } from "../screens/Login";
+import Sidebar from "./Sidebar";
 
 
 const FONTSIZEREGEX = /font-size:\s*(\d+)pt;/g;
@@ -21,10 +23,12 @@ const TrainingPage = () => {
 
     const [trainer, setTrainer] = useState(null);
     const [pages, setPages] = useState([]);
+    const [isOpen, setOpen] = useState('')
 
-    const stateLoc = useLocation().state;
-    const type = stateLoc?.type
-    const { id } = useParams();
+    const { id, type } = useParams();
+
+    const managerConeected = localStorage.getItem(USERNAME) === MANAGERNAME ? true : false;
+
 
     const getData = async () => {
         if (id) {
@@ -40,7 +44,7 @@ const TrainingPage = () => {
             else if (type === 'nutrition')
                 setPages([new Page(trainer.trainingInfo.nutrition, 1)]);
         }
-    }, [trainer])
+    }, [trainer, type])
 
     useEffect(() => {
         if (id) {
@@ -86,26 +90,29 @@ const TrainingPage = () => {
     };
 
     return (
-        <Container style={{ height: '100vh' }} >
+        <div >
+            <Container onClick={() => setOpen('')} style={{ height: '100vh' }} >
 
-            {
-                trainer && trainer !== undefined && id ?
-                    <>
-                        {pages.length > 0 ?
-                            <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Col lg={12} md={12} sm={12} xs={12} className='col'    >
-                                    {bigPages()}
-                                </Col>
-                            </Row> : null}
-                    </>
-                    :
-                    <div style={{ height: '100vh', display: 'grid', placeItems: 'center' }}>
-                        <LoadingSpinner />
-                    </div>
-            }
+                {
+                    trainer && trainer !== undefined && id ?
+                        <>
+                            {pages.length > 0 ?
+                                <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <Col lg={12} md={12} sm={12} xs={12} className='col'    >
+                                        {bigPages()}
+                                    </Col>
+                                </Row> : null}
+                        </>
+                        :
+                        <div style={{ height: '100vh', display: 'grid', placeItems: 'center' }}>
+                            <LoadingSpinner />
+                        </div>
+                }
 
-            <BackButton />
-        </Container >
+                {managerConeected && <BackButton />}
+            </Container >
+            {(!managerConeected && <Sidebar trainer={trainer} isOpen={isOpen} setOpen={setOpen} />)}
+        </div>
     );
 };
 
