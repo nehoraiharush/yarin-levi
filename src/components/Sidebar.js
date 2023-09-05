@@ -33,7 +33,7 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
     }
 
     return (
-        <div>
+        <div >
             <header className={`toggle-btn-wrapper ${isOpen}`}>
                 {isOpen === 'open' ? (
                     <IoMdClose size={26} onClick={toggleSidebar} />
@@ -44,7 +44,7 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
             <Row>
                 <Col
                     sm={3}
-                    className={`sidebar ${isOpen}`}
+                    className={`sidebar side-bar-box-shadow-container ${isOpen}`}
                 >
 
                     <div onClick={() => navigate(`../home`)}><YarinLevi color='black' /></div>

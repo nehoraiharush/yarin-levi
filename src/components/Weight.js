@@ -15,7 +15,7 @@ const Weight = ({ trainer, setTrainer, disable }) => {
     }
 
     return (
-        <div style={{
+        <div className='box-shadow-container' style={{
             backgroundColor: 'rgba(255, 255, 255, 0.4)',
             borderRadius: '50%',
             padding: '10px',

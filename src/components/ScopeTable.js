@@ -57,17 +57,15 @@ const ScopeTable = ({ trainer, setTrainer, disable }) => {
                     ))
                 }
             </div>
-            <Table style={{
+            <Table className='box-shadow-container' style={{
                 border: '1px solid #000',
-
-
             }} size='sm' bordered striped hover responsive>
                 <thead >
                     <tr style={{ width: '50px' }}>
                         {
                             dates.map((date, index) => (
                                 <th key={index}>
-                                    <input disabled={true} onChange={(e) => { handleDateChange(index, e.target.value) }} value={date} style={{ border: 'none', width: '100%' }} />
+                                    <input disabled={disable} onChange={(e) => { handleDateChange(index, e.target.value) }} value={date} style={{ border: 'none', width: '100%' }} />
                                 </th>
                             ))
                         }
@@ -111,7 +109,7 @@ const ScopeTable = ({ trainer, setTrainer, disable }) => {
                                 style={{
                                     color: (calc > 0 && trainer.trainingInfo.process === 'מסה') ||
                                         (calc < 0 && trainer.trainingInfo.process === 'חיטוב')
-                                        ? 'rgb(73, 239, 73)' : trainer.trainingInfo.process !== '' ? 'red' : 'white',
+                                        ? 'rgb(73, 239, 73)' : 'white',
                                     height: '28px',
                                     textAlign: 'right',
                                     visibility: value.firstValue === '' || value.secondValue === '' ?
@@ -132,7 +130,7 @@ const ScopeTable = ({ trainer, setTrainer, disable }) => {
                 }
             </div>
 
-        </div >
+        </div>
     )
 }
 

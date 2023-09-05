@@ -14,7 +14,7 @@ const Procces = ({ trainer, setTrainer, disable }) => {
 
 
     return (
-        <div style={{
+        <div className='box-shadow-container' style={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',

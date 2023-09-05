@@ -1,6 +1,6 @@
 .floating-button {
     position: fixed;
-    left: 30px;
+    left: 20px;
     width: 70px;
     height: 70px;
     /* Adjust color as needed */
@@ -8,14 +8,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: background-color 0.3s ease;
     z-index: 3;
+    user-select: none;
 }
 
 .return-btn {
-    top: 30px;
+    top: 20px;
     background-color: rgba(255, 255, 255, 0.5);
     width: 100px;
     height: 100px;

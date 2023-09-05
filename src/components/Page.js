@@ -8,7 +8,7 @@ import Page from "../PageClass";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/A4Page.css';
 import '../style/sidebar.css';
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import LoadingSpinner from "./Loading";
@@ -22,7 +22,7 @@ const FONTSIZEREGEX = /font-size:\s*(\d+)pt;/g;
 const TrainingPage = () => {
 
     const [trainer, setTrainer] = useState(null);
-    const [pages, setPages] = useState([]);
+    const [page, setPages] = useState(null);
     const [isOpen, setOpen] = useState('')
 
     const { id, type } = useParams();
@@ -40,9 +40,9 @@ const TrainingPage = () => {
     useEffect(() => {
         if (trainer) {
             if (type === 'trainingPlan')
-                setPages([new Page(trainer.trainingInfo.trainingPlan, 1)]);
+                setPages(new Page(trainer.trainingInfo.trainingPlan, 1));
             else if (type === 'nutrition')
-                setPages([new Page(trainer.trainingInfo.nutrition, 1)]);
+                setPages(new Page(trainer.trainingInfo.nutrition, 1));
         }
     }, [trainer, type])
 
@@ -57,36 +57,31 @@ const TrainingPage = () => {
     };
 
     const bigPages = () => {
-        return pages.map((page, index) => {
-            const isLastPage = index === pages.length - 1;
-            const marginBottom = isLastPage ? '50px' : '0';
-            let contentWithCustomTableClass = null;
-            if (page.getContent() !== null) {
-                const contentWithDynamicFontSize = page.getContent().replace(FONTSIZEREGEX, (match, fontSize) => {
-                    const dynamicFontSize = parseInt(fontSize) / 16;
+        let contentWithCustomTableClass = null;
+        if (page.getContent() !== null) {
+            const contentWithDynamicFontSize = page.getContent().replace(FONTSIZEREGEX, (match, fontSize) => {
+                const dynamicFontSize = parseInt(fontSize) / 16;
 
-                    console.log(fontSize);
-                    return `font-size: ${dynamicFontSize}rem;`;
-                });
+                return `font-size: ${dynamicFontSize}rem;`;
+            });
 
-                const contentWithResponsiveImages = contentWithDynamicFontSize?.replace(/<img/g, '<img class="img-fluid"');
+            const contentWithResponsiveImages = contentWithDynamicFontSize?.replace(/<img/g, '<img class="img-fluid"');
 
-                contentWithCustomTableClass = contentWithResponsiveImages.replace(/<table/g, '<table class="dynamic-table"');
-            }
-            return (
-                <Form key={index} id={`big-page-${index + 1}`} className="form-big-page">
-                    <Form.Group>
-                        <div
-                            className="textarea big"
-                            style={{ marginBottom }}
-                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(contentWithCustomTableClass) }}
-                            onDrop={handleDrag}
-                            dir="auto"
-                        />
-                    </Form.Group>
-                </Form>
-            );
-        });
+            contentWithCustomTableClass = contentWithResponsiveImages.replace(/<table/g, '<table class="dynamic-table"');
+        }
+        return (
+            <Form id={`big-page`} className="form-big-page box-shadow-container">
+                <Form.Group>
+                    <div
+                        className="textarea big"
+                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(contentWithCustomTableClass) }}
+                        onDrop={handleDrag}
+                        dir="auto"
+                    />
+                </Form.Group>
+            </Form>
+        );
+        ;
     };
 
     return (
@@ -96,12 +91,17 @@ const TrainingPage = () => {
                 {
                     trainer && trainer !== undefined && id ?
                         <>
-                            {pages.length > 0 ?
+                            {page ?
                                 <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <Col lg={12} md={12} sm={12} xs={12} className='col'    >
                                         {bigPages()}
                                     </Col>
-                                </Row> : null}
+                                </Row>
+                                :
+                                <div style={{ height: '100vh', display: 'grid', placeItems: 'center' }}>
+                                    <LoadingSpinner />
+                                </div>
+                            }
                         </>
                         :
                         <div style={{ height: '100vh', display: 'grid', placeItems: 'center' }}>
@@ -111,7 +111,7 @@ const TrainingPage = () => {
 
                 {managerConeected && <BackButton />}
             </Container >
-            {(!managerConeected && <Sidebar trainer={trainer} isOpen={isOpen} setOpen={setOpen} />)}
+            <Sidebar trainer={trainer} isOpen={isOpen} setOpen={setOpen} />
         </div>
     );
 };

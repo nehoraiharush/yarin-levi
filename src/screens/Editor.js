@@ -185,11 +185,11 @@ const Editor = () => {
                                                 input.click();
                                             },
                                             content_style: `
-                            body { 
-                                font-family:Helvetica,Arial,sans-serif; f
-                                ont-size:14px;
-                            }
-                            `
+                                                            body { 
+                                                                font-family:Helvetica,Arial,sans-serif; f
+                                                                ont-size:14px;
+                                                            }
+                                                        `
                                         }}
                                     />
                                 </Col>

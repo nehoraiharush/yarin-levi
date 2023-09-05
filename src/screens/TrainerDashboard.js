@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { BsPencilSquare } from 'react-icons/bs'
 
 import Sidebar from '../components/Sidebar'
 import TrainerView from '../components/TrainerView'
@@ -23,6 +24,13 @@ const TrainerDashboard = () => {
     const [isOpen, setOpen] = useState('')
     const [trainer, setTrainer] = useState(null);
     const disable = localStorage.getItem(USERNAME) === MANAGERNAME ? false : true;
+
+    // useEffect(() => {
+    //     if (id !== localStorage.getItem(USERID) && localStorage.getItem(ISMANAGER) !== 'true') {
+    //         toast.warn('גישה נדחתה')
+    //         navigate(-1)
+    //     }
+    // }, [])
 
     const getData = async () => {
         if (id) {
@@ -50,13 +58,6 @@ const TrainerDashboard = () => {
         getData();
     }, [])
 
-    // useEffect(() => {
-    //     if (id !== localStorage.getItem(USERID) && localStorage.getItem(ISMANAGER) !== 'true') {
-    //         toast.warn('גישה נדחתה')
-    //         navigate(-1)
-    //     }
-    // }, [])
-
     return (
 
         <div className='dashboard-container' >
@@ -69,6 +70,11 @@ const TrainerDashboard = () => {
                     <>
                         <TrainerView disable={disable} setTrainer={setTrainer} trainer={trainer} toggleSidebar={setOpen} id={id} />
                         <Sidebar trainer={trainer} isOpen={isOpen} setOpen={setOpen} />
+                        {disable &&
+                            <div className='comment-btn'>
+                                <BsPencilSquare color='black' size={44} />
+                            </div>}
+
                     </>
             }
             {!disable && <BackButton />}

@@ -4,10 +4,13 @@
     color: black;
     padding: 10%;
     word-wrap: break-word;
+    border-radius: 10px;
+    margin-bottom: 50px;
 }
 
 .big {
     min-height: 1000px;
+    overflow-x: auto;
 }
 
 .form-small-page {
@@ -32,4 +35,8 @@
     font-size: calc(0.1vw + 0.5vmin);
     height: 1%;
     white-space: nowrap;
+}
+
+.box-shadow-container {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
 }

@@ -42,16 +42,14 @@ const initValues = [
 ]
 
 const date = new Date();
+const yesterday = new Date(date.setDate(date.getDate() - 1));
 
-const currentDay = String(date.getDate()).padStart(2, '0');
-
-const currentMonth = String(date.getMonth() + 1).padStart(2, "0");
-
-const currentYear = date.getFullYear();
-
-// we will display the date as DD-MM-YYYY 
-
-const currentDate = `${currentDay}/${currentMonth}/${currentYear}`;
+export const getDate = date => {
+    const currentDay = String(date.getDate()).padStart(2, '0');
+    const currentMonth = String(date.getMonth() + 1).padStart(2, "0");
+    const currentYear = date.getFullYear();
+    return `${currentYear}-${currentMonth}-${currentDay}`;
+}
 
 const Signup = () => {
 
@@ -117,9 +115,10 @@ const Signup = () => {
                                 status: 'active',
                                 age: 0,
                                 isManager: false,
+                                nextMeeting: getDate(yesterday),
                                 trainingInfo: {
                                     hasValues: false,
-                                    dates: [currentDate, currentDate],
+                                    dates: [getDate(date), getDate(date)],
                                     values: initValues,
                                     process: '',
                                     weight: '',

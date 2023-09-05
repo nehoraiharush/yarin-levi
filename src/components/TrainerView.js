@@ -1,26 +1,30 @@
-import React, { useState } from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import Weight from './Weight';
-import Procces from './Procces';
-import { useTrainerContext, SETLOADING } from './TrainerContexts';
+import React, { useEffect, useState, useRef } from 'react';
+import { Button, Col, Container, Row, Modal } from 'react-bootstrap';
+import { useTrainerContext, SETLOADING, SETTRAINERS } from './TrainerContexts';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { BsTrash } from 'react-icons/bs'
-
-
-import '../style/sidebar.css'
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 import LoadingSpinner from './Loading';
 import ScopeTable from './ScopeTable';
-import { toast } from 'react-toastify';
 import { db } from '../firebase/firebaseConfig';
-import { useNavigate } from 'react-router-dom';
 import { MANAGERNAME, USERNAME } from '../screens/Login';
+import Procces from './Procces';
+import Weight from './Weight';
+import PlanInfoCard from './PlanInfoCard';
+import CustomeModal from './CustomeModal';
+
+import '../style/sidebar.css'
 
 const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
 
     const { state, dispatch } = useTrainerContext();
     const [hasChanged, setChange] = useState(false);
+    const [modalShown, invokeModal] = useState(false);
+    const dateInput = useRef();
     const navigate = useNavigate();
+    const { meetingsDict, trainersList } = state;
 
     const dispatchChanges = async () => {
         try {
@@ -48,6 +52,12 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                     }
                 });
                 await dispatchChanges();
+                dispatch({
+                    type: SETTRAINERS,
+                    payload: {
+                        trainersList: [...trainersList.filter(trainerA => trainerA.name !== trainer.name), trainer]
+                    }
+                })
                 setChange(false);
                 toast.success('השינויים נשמרו בהצלחה')
             } catch (error) {
@@ -76,6 +86,39 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
         }
     }
 
+    const handleDateChange = async (e) => {
+        changeTrainerData({
+            ...trainer,
+            nextMeeting: e.target.value
+        })
+        if (meetingsDict[dateInput.current.value])
+            invokeModal(true);
+    }
+
+    const CloseModal = () => { invokeModal(false) }
+
+    const ModalBuild = () => {
+
+        return (
+            <Modal style={{ color: 'black' }} show={modalShown}>
+                <Modal.Header >
+                    <Modal.Title> ירין לוי מאמן אישי - זמני פגישות</Modal.Title>
+                </Modal.Header>
+                <Modal.Body dir='auto'>
+                    <h4>פגישות בתאריך: {dateInput.current ? dateInput.current.value : ''}</h4>
+                    {dateInput.current && meetingsDict &&
+                        meetingsDict[dateInput.current.value] &&
+                        meetingsDict[dateInput.current.value]
+                            .map((name, index) => (<h4 key={index}>{`${index + 1}. ${name}`}</h4>))}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="info" onClick={CloseModal}>
+                        סגור
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        );
+    }
 
     return (
         <Container
@@ -121,14 +164,17 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                                     justifyContent: 'center',
                                 }}
                             >
+                                {/* DELETE ICON AND NAME */}
                                 <div style={{ display: 'flex', alignItems: 'center', zIndex: '4' }}>
                                     <h2>{trainer.name}</h2>
                                     {!disable && <BsTrash
+                                        className='delete-icon'
                                         onClick={handleDelete}
                                         style={{ marginRight: '5px', cursor: 'pointer' }}
                                         size={30} color='#EF233C'
                                     />}
                                 </div>
+                                {/* STATUS ROW */}
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
                                     <span
                                         className='circle-status'
@@ -168,6 +214,7 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                                         />
                                     </div>}
                                 </div>
+                                {/* AGE AND NEXT MEETING */}
                                 <div style={{ textAlign: 'right', color: 'white' }}>
                                     <h4>גיל:
                                         <input
@@ -188,8 +235,14 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                                             value={trainer.age ? trainer.age : 0}
                                         />
                                     </h4>
-                                    <h4>מטרה: </h4>
-                                    <h5>משהו שהבטחתי לעצמי</h5>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <h4>פגישה הבאה:</h4>
+                                        {!disable ?
+                                            <input style={{ borderRadius: '10px', textAlign: 'right', marginBottom: '2px' }} ref={dateInput} type='date' value={trainer.nextMeeting} onChange={handleDateChange} />
+                                            :
+                                            <h4 style={{ color: 'lightblue' }}><u>{trainer.nextMeeting}</u></h4>
+                                        }
+                                    </div>
                                 </div>
                             </Col>
                             <Col lg={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -200,6 +253,25 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                             </Col>
                         </Row>
                         <Row style={{ marginTop: '40px', padding: '10px' }}>
+                            <CustomeModal
+                                showAll={false}
+                                invokeModal={invokeModal}
+                                isShown={modalShown}
+                                title={'ירין לוי מאמן אישי - זמני פגישות'}
+                                bodyTitle={<h4>פגישות בתאריך: {dateInput.current ? dateInput.current.value : ''}</h4>}
+                                body={
+                                    <>
+                                        {dateInput.current && meetingsDict &&
+                                            meetingsDict[dateInput.current.value] &&
+                                            meetingsDict[dateInput.current.value]
+                                                .map((name, index) => {
+                                                    if (name !== trainer.name)
+                                                        return <h4 key={index}>{`${index + 1}. ${name}`}</h4>
+                                                    else return null
+                                                })}
+                                    </>
+                                }
+                            />
                             <Col lg={6} style={{ display: 'grid', placeItems: 'center' }} >
 
                                 {
@@ -244,6 +316,8 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                                         </Button>
                                 }
                             </Col>
+                            <Col lg={3} style={{ display: 'flex', justifyContent: 'center' }} ><PlanInfoCard id={trainer.id} type='trainingPlan' /></Col>
+                            <Col lg={3} style={{ display: 'flex', justifyContent: 'center' }} ><PlanInfoCard id={trainer.id} type='nutrition' /></Col>
                         </Row>
                     </>
                     :
