@@ -69,7 +69,6 @@ const TrainingPage = () => {
 
             contentWithCustomTableClass = contentWithResponsiveImages.replace(/<table/g, '<table class="dynamic-table"');
         }
-        console.log(contentWithCustomTableClass);
         return (
             <div
                 className="textarea box-shadow-container"

@@ -37,7 +37,7 @@ function App() {
       />
       <TrainerProvider>
 
-        <BrowserRouter basename={`${APPNAME}`}>
+        <HashRouter basename='/'>
           <Routes>
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
@@ -49,7 +49,7 @@ function App() {
 
             <Route path='/*' element={<NotFoundPage />} />
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
 
       </TrainerProvider>
       <Rectangle />
