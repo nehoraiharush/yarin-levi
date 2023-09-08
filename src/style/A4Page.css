@@ -2,38 +2,21 @@
     resize: none;
     background-color: white !important;
     color: black;
-    padding: 10%;
+    padding: 2%;
     word-wrap: break-word;
     border-radius: 10px;
     margin-bottom: 50px;
-}
-
-.big {
-    min-height: 1000px;
-    overflow-x: auto;
-}
-
-.form-small-page {
-    margin-top: 60px;
-}
-
-.form-big-page {
     margin-top: 40px;
+    overflow: auto;
+    min-height: 1000px;
+    min-width: 1100px;
 }
+
 
 .dynamic-table td {
     border: 1px solid #000;
     padding: 8px;
     font-size: calc(0.8vw + 1vmin);
-    white-space: nowrap;
-}
-
-.dynamic-table-small td,
-.dynamic-table-small tr {
-    border: 1px solid #000;
-    padding: calc(0.1vw);
-    font-size: calc(0.1vw + 0.5vmin);
-    height: 1%;
     white-space: nowrap;
 }
 

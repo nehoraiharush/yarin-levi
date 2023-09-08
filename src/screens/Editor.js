@@ -145,6 +145,7 @@ const Editor = () => {
                                         initialValue={page.getContent()}
 
                                         init={{
+
                                             branding: false,
                                             height: 1500,
                                             menubar: true,
@@ -186,8 +187,8 @@ const Editor = () => {
                                             },
                                             content_style: `
                                                             body { 
-                                                                font-family:Helvetica,Arial,sans-serif; f
-                                                                ont-size:14px;
+                                                                font-family:Helvetica,Arial,sans-serif; 
+                                                                font-size:14px;
                                                             }
                                                         `
                                         }}

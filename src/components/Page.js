@@ -69,17 +69,16 @@ const TrainingPage = () => {
 
             contentWithCustomTableClass = contentWithResponsiveImages.replace(/<table/g, '<table class="dynamic-table"');
         }
+        console.log(contentWithCustomTableClass);
         return (
-            <Form id={`big-page`} className="form-big-page box-shadow-container">
-                <Form.Group>
-                    <div
-                        className="textarea big"
-                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(contentWithCustomTableClass) }}
-                        onDrop={handleDrag}
-                        dir="auto"
-                    />
-                </Form.Group>
-            </Form>
+            <div
+                className="textarea box-shadow-container"
+                style={{
+                    overflow: 'auto'
+                }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(contentWithCustomTableClass) }}
+                onDrop={handleDrag}
+            />
         );
         ;
     };
