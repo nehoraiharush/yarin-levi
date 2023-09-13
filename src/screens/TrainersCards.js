@@ -41,6 +41,11 @@ export const getTrainersFromFirebase = async () => {
 }
 
 const today = new Date();
+const first = today.getDate() - today.getDay();
+const last = first + 6;
+
+const firstday = new Date(today.setDate(first));
+const lastday = new Date(today.setDate(last));
 const next7Days = new Date(today.setDate(today.getDate() + 7));
 
 export default function TrainersCards() {
@@ -152,7 +157,7 @@ export default function TrainersCards() {
             return Object.entries(meetingsDict).map(([date, names], index) => {
                 const date2 = date.split('-');
                 const newDate = new Date(parseInt(date2[0]), parseInt(date2[1]) - 1, parseInt(date2[2]));
-                if (newDate <= next7Days) {
+                if (newDate <= lastday && newDate >= firstday) {
                     return (
                         <div key={index}>
                             <h4><u>{date}:</u></h4>
@@ -203,7 +208,7 @@ export default function TrainersCards() {
                                         isShown={modalShown}
                                         invokeModal={invokeModal}
                                         title={'פגישות קרובות: '}
-                                        bodyTitle={<h4>פגישות ב - 7 ימים הבאים: </h4>}
+                                        bodyTitle={<h4>פגישות בשבוע הקרוב: </h4>}
                                         body={getMeetingsName()}
                                     />
                                     {Cards()}
