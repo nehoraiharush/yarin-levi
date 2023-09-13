@@ -15,6 +15,8 @@ import { collection, getDocs, limit, query, where } from "firebase/firestore";
 
 export const USERID = 'userId';
 export const USERNAME = 'username';
+export const ISMANAGER = 'ISMANAGER';
+
 export const MANAGERNAME = 'ירין לוי'
 export const MANAGERPASS = 'yarin0584560107'
 
@@ -48,7 +50,10 @@ const Login = () => {
                     localStorage.removeItem(USERNAME);
                     localStorage.setItem(USERID, data.docs[0].id);
                     localStorage.setItem(USERNAME, name)
-                    if (name === MANAGERNAME) navigate(`../all-trainers`);
+                    if (name === MANAGERNAME) {
+                        localStorage.setItem(ISMANAGER, 'true');
+                        navigate(`../all-trainers`);
+                    }
                     else navigate(`../trainer-dashboard/${data.docs[0].id}`);
                     toast.success('שלום ' + name);
                 } else {

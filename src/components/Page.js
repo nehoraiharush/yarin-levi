@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import DOMPurify from "dompurify";
 
 
@@ -15,6 +15,7 @@ import LoadingSpinner from "./Loading";
 import BackButton from "./BackButton";
 import { MANAGERNAME, USERNAME } from "../screens/Login";
 import Sidebar from "./Sidebar";
+import { useTrainerContext } from "./TrainerContexts";
 
 
 const FONTSIZEREGEX = /font-size:\s*(\d+)pt;/g;
@@ -23,7 +24,8 @@ const TrainingPage = () => {
 
     const [trainer, setTrainer] = useState(null);
     const [page, setPages] = useState(null);
-    const [isOpen, setOpen] = useState('')
+
+    const { isOpen, setOpen } = useTrainerContext();
 
     const { id, type } = useParams();
 
@@ -47,6 +49,7 @@ const TrainingPage = () => {
     }, [trainer, type])
 
     useEffect(() => {
+        if (isOpen === 'open') setOpen('');
         if (id) {
             getData();
         }
@@ -64,22 +67,21 @@ const TrainingPage = () => {
 
                 return `font-size: ${dynamicFontSize}rem;`;
             });
-
-            const contentWithResponsiveImages = contentWithDynamicFontSize?.replace(/<img/g, '<img class="img-fluid"');
-
+            const contentwithBodyAutoOverflow = contentWithDynamicFontSize?.replace(/<div/, '<div class="custom-overflow"');
+            const contentWithResponsiveImages = contentwithBodyAutoOverflow?.replace(/<img/g, '<img class="img-fluid"');
             contentWithCustomTableClass = contentWithResponsiveImages.replace(/<table/g, '<table class="dynamic-table"');
         }
         return (
             <div
                 className="textarea box-shadow-container"
                 style={{
-                    overflow: 'auto'
+                    overflow: 'scroll'
                 }}
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(contentWithCustomTableClass) }}
                 onDrop={handleDrag}
+                dir="auto"
             />
         );
-        ;
     };
 
     return (

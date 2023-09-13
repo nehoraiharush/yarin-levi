@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { SETLOADING, useTrainerContext } from "../components/TrainerContexts";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import Sidebar from "../components/Sidebar";
 
@@ -20,11 +20,10 @@ const Editor = () => {
     const [page, setPage] = useState(new Page("", 1));
     const [trainer, setTrainer] = useState(null);
     const [hasChanged, setChange] = useState(false);
-    const [isOpen, setOpen] = useState('')
 
     const tinymce = useRef(null);
 
-    const { state, dispatch } = useTrainerContext();
+    const { state, dispatch, isOpen, setOpen } = useTrainerContext();
     const { id, type } = useParams();
 
     const getData = async () => {
@@ -34,6 +33,7 @@ const Editor = () => {
 
     //Getting the trainer info
     useEffect(() => {
+        if (isOpen === 'open') setOpen('');
         if (id) getData();
     }, []);
 
@@ -145,7 +145,6 @@ const Editor = () => {
                                         initialValue={page.getContent()}
 
                                         init={{
-
                                             branding: false,
                                             height: 1500,
                                             menubar: true,

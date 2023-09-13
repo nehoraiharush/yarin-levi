@@ -1,4 +1,4 @@
-import { Routes, Route, HashRouter, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, HashRouter } from 'react-router-dom';
 
 import { TrainerProvider } from './components/TrainerContexts.js';
 
@@ -15,9 +15,6 @@ import { ToastContainer, Zoom } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 import Rectangle from './components/Rectangle.js';
-
-export const APPNAME = '/yarin-levi'
-
 
 function App() {
   return (

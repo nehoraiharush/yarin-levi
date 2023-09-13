@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import YarinLevi from "../components/YarinLevi";
@@ -65,7 +65,6 @@ const Signup = () => {
     const createTrainerData = async (trainer) => {
         addDoc(trainersDB, trainer)
             .then(async document => {
-                console.log(document.id);
                 await updateDoc(doc(db, 'trainers', document.id), {
                     id: document.id,
                     ...trainer
@@ -100,7 +99,6 @@ const Signup = () => {
                         let flag = false;
                         if (data.docs.length > 1) {
                             for (const doc of data.docs) {
-                                console.log(doc.data().name.replace(' ', ''));
                                 if (doc.data().name.replace(' ', '') === name.replace(' ', '')) {
                                     toast.error('משתמש קיים')
                                     flag = true;
@@ -114,6 +112,7 @@ const Signup = () => {
                                 password: passwordRef.current.value,
                                 status: 'active',
                                 age: 0,
+                                goal: "",
                                 isManager: false,
                                 nextMeeting: getDate(yesterday),
                                 trainingInfo: {

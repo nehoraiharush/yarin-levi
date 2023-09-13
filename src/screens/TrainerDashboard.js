@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { BsPencilSquare } from 'react-icons/bs'
 
 import Sidebar from '../components/Sidebar'
 import TrainerView from '../components/TrainerView'
 import LoadingSpinner from '../components/Loading'
-import { MANAGERNAME, USERID, USERNAME } from './Login'
+import { ISMANAGER, MANAGERNAME, USERID, USERNAME } from './Login'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { db } from '../firebase/firebaseConfig'
@@ -13,6 +13,8 @@ import { collection, getDocs, limit, query, where } from 'firebase/firestore'
 
 import '../style/TrainerCard.css';
 import BackButton from '../components/BackButton'
+import { useTrainerContext } from '../components/TrainerContexts'
+import CustomeModal from '../components/CustomeModal'
 
 const TrainerDashboard = () => {
 
@@ -20,17 +22,17 @@ const TrainerDashboard = () => {
     const { id } = useParams();
 
     const trainersDB = collection(db, 'trainers');
-
-    const [isOpen, setOpen] = useState('')
     const [trainer, setTrainer] = useState(null);
     const disable = localStorage.getItem(USERNAME) === MANAGERNAME ? false : true;
 
-    // useEffect(() => {
-    //     if (id !== localStorage.getItem(USERID) && localStorage.getItem(ISMANAGER) !== 'true') {
-    //         toast.warn('גישה נדחתה')
-    //         navigate(-1)
-    //     }
-    // }, [])
+    const [modalShown, invokeModal] = useState(false);
+
+    const { isOpen, setOpen } = useTrainerContext();
+
+    useEffect(() => {
+        console.log(localStorage.getItem(USERID));
+
+    }, [id])
 
     const getData = async () => {
         if (id) {
@@ -55,8 +57,14 @@ const TrainerDashboard = () => {
     }
 
     useEffect(() => {
-        getData();
-    }, [])
+        if (id !== localStorage.getItem(USERID) && localStorage.getItem(ISMANAGER) !== 'true') {
+            navigate(-1)
+            toast.warn('גישה נדחתה')
+        }
+        if (isOpen === 'open') setOpen('');
+        if (id)
+            getData();
+    }, [id])
 
     return (
 
@@ -72,8 +80,17 @@ const TrainerDashboard = () => {
                         <Sidebar trainer={trainer} isOpen={isOpen} setOpen={setOpen} />
                         {disable &&
                             <div className='comment-btn'>
-                                <BsPencilSquare color='black' size={44} />
-                            </div>}
+                                <BsPencilSquare onClick={() => invokeModal(true)} color='black' size={44} />
+                            </div>
+                            &&
+                            <CustomeModal
+                                isShown={modalShown}
+                                invokeModal={invokeModal}
+                                title={'פגישות קרובות: '}
+                                bodyTitle={<h4>פגישות ב - 7 ימים הבאים: </h4>}
+                                body={<h1>כלום</h1>}
+                            />
+                        }
 
                     </>
             }

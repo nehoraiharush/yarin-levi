@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useState } from 'react';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { getTrainersFromFirebase } from '../screens/TrainersCards';
@@ -62,6 +62,7 @@ const currentYear = parseInt(date.getFullYear());
 
 export const TrainerProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const [isOpen, setOpen] = useState('');
 
     const getData = async () => {
         if (state.trainersList.length <= 1) {
@@ -131,7 +132,7 @@ export const TrainerProvider = ({ children }) => {
     }, [])
 
     return (
-        <TrainerContext.Provider value={{ state, dispatch }}>
+        <TrainerContext.Provider value={{ state, isOpen, dispatch, setOpen }}>
             {children}
         </TrainerContext.Provider>
     );

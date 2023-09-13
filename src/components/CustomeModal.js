@@ -1,13 +1,8 @@
 import React, { useEffect } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 
-const CustomeModal = ({ showAll, title, bodyTitle, body, isShown, invokeModal }) => {
-    const missingBody = body.props.children !== undefined && body.props.children.every((e) => e === null)
-    useEffect(() => {
-        if (missingBody && !showAll) {
-            invokeModal(false)
-        }
-    }, [body])
+const CustomeModal = ({ title, bodyTitle, body, isShown, invokeModal }) => {
+    const missingBody = body.props.children !== undefined && (typeof body.props.children === 'string' || body.props.children.every((e) => e === null))
     return (
         <Modal style={{ color: 'black' }} show={isShown}>
             <Modal.Header dir='auto' >

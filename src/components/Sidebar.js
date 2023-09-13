@@ -5,7 +5,7 @@ import '../style/sidebar.css';
 import { IoMdMenu, IoMdClose } from "react-icons/io";
 import YarinLevi from './YarinLevi.js'
 import { Link, useNavigate } from 'react-router-dom';
-import { MANAGERNAME, USERID, USERNAME } from '../screens/Login';
+import { ISMANAGER, MANAGERNAME, USERID, USERNAME } from '../screens/Login';
 import { toast } from 'react-toastify';
 
 
@@ -19,17 +19,18 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
         else setOpen('');
     };
 
-    const userConnected = trainer ? true : false;
+    const userConnected = localStorage.getItem(USERID) ? true : false;
     const managerConeected = localStorage.getItem(USERNAME) === MANAGERNAME ? true : false;
 
     const handleLogout = (e) => {
         const name = localStorage.getItem(USERNAME)
         localStorage.removeItem(USERID);
         localStorage.removeItem(USERNAME);
+        localStorage.removeItem(ISMANAGER);
         if (localStorage.getItem(USERID) && localStorage.getItem(USERNAME))
             e.preventDefault();
         toast.success(`${name} התנתק בהצלחה`)
-
+        setOpen('')
     }
 
     return (
@@ -52,19 +53,26 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
                         {
                             userConnected ?
                                 <div>
-                                    <Link color='red' className='nav-link'
-                                        to={`../trainer-dashboard/${trainer.id}`}
-                                    >
-                                        שלום {trainer.name}
-                                    </Link>
-                                    <Link className='nav-link'
-                                        to={`../${managerConeected ? 'editor' : 'training-info'}/${trainer.id}/trainingPlan`}
-                                    >
-                                        תכנית אימונים
-                                    </Link>
-                                    <Link className='nav-link'
-                                        to={`../${managerConeected ? 'editor' : 'training-info'}/${trainer.id}/nutrition`}
-                                    >תפריט תזונה</Link>
+                                    {
+                                        trainer ?
+                                            <>
+                                                <Link color='red' className='nav-link'
+                                                    to={`../trainer-dashboard/${trainer.id}`}
+                                                >
+                                                    שלום {trainer.name}
+                                                </Link>
+                                                <Link className='nav-link'
+                                                    to={`../${managerConeected ? 'editor' : 'training-info'}/${trainer.id}/trainingPlan`}
+                                                >
+                                                    תכנית אימונים
+                                                </Link>
+                                                <Link className='nav-link'
+                                                    to={`../${managerConeected ? 'editor' : 'training-info'}/${trainer.id}/nutrition`}
+                                                >תפריט תזונה</Link>
+                                            </>
+                                            :
+                                            null
+                                    }
                                     <Link onClick={handleLogout} to={'../login'} className='nav-link'
                                     >התנתק</Link>
                                 </div>

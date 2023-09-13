@@ -243,6 +243,24 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                                             <h4 style={{ color: 'lightblue' }}><u>{trainer.nextMeeting}</u></h4>
                                         }
                                     </div>
+                                    <h4 style={{ marginTop: '3px' }}>יעד:
+                                        <input
+                                            disabled={disable}
+                                            onChange={(e) => changeTrainerData({
+                                                ...trainer,
+                                                goal: e.target.value
+                                            })}
+                                            style={{
+                                                background: 'none',
+                                                border: 'none',
+                                                color: 'white',
+                                                textAlign: 'right',
+                                                marginRight: '5px',
+                                            }}
+                                            dir='auto'
+                                            value={trainer.goal}
+                                        />
+                                    </h4>
                                 </div>
                             </Col>
                             <Col lg={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
