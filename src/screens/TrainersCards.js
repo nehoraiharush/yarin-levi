@@ -52,6 +52,7 @@ export default function TrainersCards() {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [modalShown, invokeModal] = useState(false);
+    const [showAllMeetings, setShowAllMeetings] = useState(false);
     const navigate = useNavigate();
 
     const { state, dispatch, isOpen, setOpen } = useTrainerContext();
@@ -68,6 +69,54 @@ export default function TrainersCards() {
     const filteredOfflineTrainers = trainersList?.filter((trainer) => trainer.status === 'offline').filter((trainer) =>
         trainer.name.includes(searchQuery)
     );
+
+    const getWeeklyMeetings = () => {
+        const buildModalBody = () => {
+            return Object.entries(meetingsDict).map(([date, names], index) => {
+                const date2 = date.split('-');
+                const newDate = new Date(parseInt(date2[0]), parseInt(date2[1]) - 1, parseInt(date2[2]));
+                if (newDate <= lastday && newDate >= firstday) {
+                    return (
+                        <div key={index}>
+                            <h4><u>{date}:</u></h4>
+                            {names.map((name, innerIndex) => (
+                                <h4 key={innerIndex}>{`${innerIndex + 1}. ${name}`}</h4>
+                            ))}
+                        </div>);
+                } else return null;
+            })
+        }
+        if (meetingsDict) {
+            const modalBody = buildModalBody()
+            return (<>{modalBody}</>);
+        } else return null;
+    }
+
+    const getAllMeetings = () => {
+        const buildModalBody = () => {
+            return Object.entries(meetingsDict).map(([date, names], index) => {
+                return (
+                    <div key={index}>
+                        <h4><u>{date}:</u></h4>
+                        {names.map((name, innerIndex) => (
+                            <h4 key={innerIndex}>{`${innerIndex + 1}. ${name}`}</h4>
+                        ))}
+                    </div>
+                );
+            })
+        }
+
+        if (meetingsDict) {
+            const modalBody = buildModalBody()
+            return (<>{modalBody}</>);
+        } else return null;
+    }
+
+    const TitleAndBody = {
+        title: showAllMeetings ? 'כל הפגישות:' : 'פגישות קרובות: ',
+        bodyTitle: showAllMeetings ? '' : <h4> פגישות בשבוע הקרוב:</h4>,
+        body: showAllMeetings ? getAllMeetings() : getWeeklyMeetings()
+    }
 
     const getTrainersFromDB = async () => {
         try {
@@ -152,28 +201,6 @@ export default function TrainersCards() {
         );
     }
 
-    const getMeetingsName = () => {
-        const buildModalBody = () => {
-            return Object.entries(meetingsDict).map(([date, names], index) => {
-                const date2 = date.split('-');
-                const newDate = new Date(parseInt(date2[0]), parseInt(date2[1]) - 1, parseInt(date2[2]));
-                if (newDate <= lastday && newDate >= firstday) {
-                    return (
-                        <div key={index}>
-                            <h4><u>{date}:</u></h4>
-                            {names.map((name, innerIndex) => (
-                                <h4 key={innerIndex}>{`${innerIndex + 1}. ${name}`}</h4>
-                            ))}
-                        </div>);
-                } else return null;
-            })
-        }
-        if (meetingsDict) {
-            const modalBody = buildModalBody()
-            return (<>{modalBody}</>);
-        } else return null;
-    }
-
     return (
         <>
             <div onClick={() => setOpen('')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -207,9 +234,9 @@ export default function TrainersCards() {
                                     <CustomeModal
                                         isShown={modalShown}
                                         invokeModal={invokeModal}
-                                        title={'פגישות קרובות: '}
-                                        bodyTitle={<h4>פגישות בשבוע הקרוב: </h4>}
-                                        body={getMeetingsName()}
+                                        setShowAllMeetings={setShowAllMeetings}
+                                        showAllMeetings={showAllMeetings}
+                                        {...TitleAndBody}
                                     />
                                     {Cards()}
                                 </>

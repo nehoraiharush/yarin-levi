@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Button, Col, Container, Row, Modal } from 'react-bootstrap';
+import { Button, Col, Container, Row, Modal, Table } from 'react-bootstrap';
 import { useTrainerContext, SETLOADING, SETTRAINERS } from './TrainerContexts';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { BsTrash } from 'react-icons/bs'
@@ -95,31 +95,6 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
             invokeModal(true);
     }
 
-    const CloseModal = () => { invokeModal(false) }
-
-    const ModalBuild = () => {
-
-        return (
-            <Modal style={{ color: 'black' }} show={modalShown}>
-                <Modal.Header >
-                    <Modal.Title> ירין לוי מאמן אישי - זמני פגישות</Modal.Title>
-                </Modal.Header>
-                <Modal.Body dir='auto'>
-                    <h4>פגישות בתאריך: {dateInput.current ? dateInput.current.value : ''}</h4>
-                    {dateInput.current && meetingsDict &&
-                        meetingsDict[dateInput.current.value] &&
-                        meetingsDict[dateInput.current.value]
-                            .map((name, index) => (<h4 key={index}>{`${index + 1}. ${name}`}</h4>))}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="info" onClick={CloseModal}>
-                        סגור
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        );
-    }
-
     return (
         <Container
             onClick={() => toggleSidebar('')}
@@ -166,7 +141,27 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                             >
                                 {/* DELETE ICON AND NAME */}
                                 <div style={{ display: 'flex', alignItems: 'center', zIndex: '4' }}>
-                                    <h2>{trainer.name}</h2>
+                                    <h2>
+                                        <textarea
+                                            value={trainer.name}
+                                            disabled={disable}
+                                            onChange={(e) => changeTrainerData({
+                                                ...trainer,
+                                                name: e.target.value
+                                            })}
+                                            dir='auto'
+                                            style={{
+                                                resize: 'none',
+                                                width: '250px',
+                                                height: '40px',
+                                                background: 'none',
+                                                border: 'none',
+                                                color: 'white',
+                                                textAlign: 'center',
+                                                paddingRight: '5px'
+                                            }}
+                                        />
+                                    </h2>
                                     {!disable && <BsTrash
                                         className='delete-icon'
                                         onClick={handleDelete}
@@ -270,7 +265,7 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                                 <Procces disable={disable} trainer={trainer} setTrainer={changeTrainerData} />
                             </Col>
                         </Row>
-                        <Row style={{ marginTop: '40px', padding: '10px' }}>
+                        <Row style={{ padding: '10px' }}>
                             <CustomeModal
                                 showAll={false}
                                 invokeModal={invokeModal}
@@ -291,10 +286,119 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                                 }
                             />
                             <Col lg={6} style={{ display: 'grid', placeItems: 'center' }} >
+                                <div style={{ display: 'flex', gap: '10px' }}>
 
+                                    {
+                                        trainer.cardioInfo.hasCardio ?
+                                            <>
+                                                <h5>אירובי</h5>
+                                                <Table className='box-shadow-container' style={{
+                                                    border: '1px solid #000',
+                                                }} size='sm' bordered striped hover responsive>
+                                                    <thead >
+                                                        <tr style={{ width: '50px' }}>
+                                                            {
+                                                                <>
+                                                                    <td>
+                                                                        קלוריות
+                                                                    </td>
+                                                                    <td>
+                                                                        פעמים בשבוע
+                                                                    </td>
+                                                                </>
+                                                            }
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <input
+                                                                    disabled={disable}
+                                                                    onChange={(e) => {
+                                                                        let value = e.target.value;
+                                                                        if (e.target.value === "") value = "0";
+                                                                        changeTrainerData({
+                                                                            ...trainer,
+                                                                            cardioInfo: {
+                                                                                ...trainer.cardioInfo,
+                                                                                calories: parseInt(value)
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                    }
+                                                                    value={trainer.cardioInfo.calories}
+                                                                    style={{ border: 'none', width: '100%' }}
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    disabled={disable}
+                                                                    onChange={(e) => {
+                                                                        let value = e.target.value;
+                                                                        if (e.target.value === "") value = "0";
+                                                                        changeTrainerData({
+                                                                            ...trainer,
+                                                                            cardioInfo: {
+                                                                                ...trainer.cardioInfo,
+                                                                                timesAweek: parseInt(value)
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                    }
+                                                                    value={trainer.cardioInfo.timesAweek}
+                                                                    style={{ border: 'none', width: '100%' }}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </Table>
+                                                {!disable && <Button
+                                                    onClick={
+                                                        () => {
+                                                            changeTrainerData({
+                                                                ...trainer,
+                                                                cardioInfo: {
+                                                                    ...trainer.cardioInfo,
+                                                                    hasCardio: false
+                                                                }
+                                                            })
+                                                        }}
+                                                    className="signup-btn"
+                                                    variant="btn-md"
+                                                    style={{ width: '35%', margin: '0', height: '50px', padding: '0', alignSelf: 'center' }}
+                                                >
+                                                    הסר אירובי
+                                                </Button>}
+                                            </>
+                                            :
+                                            !disable && <Button
+                                                onClick={
+                                                    () => {
+                                                        changeTrainerData({
+                                                            ...trainer,
+                                                            cardioInfo: {
+                                                                ...trainer.cardioInfo,
+                                                                hasCardio: true
+                                                            }
+                                                        })
+                                                    }}
+                                                className="signup-btn"
+                                                variant="btn-lg"
+                                                style={{ width: '100%' }}
+                                            >
+                                                הוסף אירובי
+                                            </Button>
+                                    }
+
+                                </div>
                                 {
                                     trainer.trainingInfo.hasValues ?
-                                        <>
+                                        <div style={{
+                                            marginTop: '10px',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center'
+                                        }}>
                                             <ScopeTable disable={disable} trainer={trainer} setTrainer={changeTrainerData} />
                                             {!disable && <Button
                                                 onClick={
@@ -309,11 +413,11 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                                                     }}
                                                 className="signup-btn"
                                                 variant="btn btn-lg"
-                                                style={{ width: '60%' }}
+                                                style={{ width: '60%', margin: '0' }}
                                             >
                                                 הסר היקפים מהתוכנית
                                             </Button>}
-                                        </>
+                                        </div>
                                         :
                                         !disable && <Button
                                             onClick={
@@ -334,8 +438,8 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                                         </Button>
                                 }
                             </Col>
-                            <Col lg={3} style={{ display: 'flex', justifyContent: 'center' }} ><PlanInfoCard id={trainer.id} type='trainingPlan' /></Col>
-                            <Col lg={3} style={{ display: 'flex', justifyContent: 'center' }} ><PlanInfoCard id={trainer.id} type='nutrition' /></Col>
+                            <Col lg={3} style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }} ><PlanInfoCard id={trainer.id} type='trainingPlan' /></Col>
+                            <Col lg={3} style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }} ><PlanInfoCard id={trainer.id} type='nutrition' /></Col>
                         </Row>
                     </>
                     :

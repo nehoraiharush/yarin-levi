@@ -75,9 +75,7 @@ const Signup = () => {
             })
             .catch(err => {
                 toast.error(err.message)
-            })
-
-
+            });
     }
 
     const handleSubmit = async (e) => {
@@ -115,6 +113,11 @@ const Signup = () => {
                                 goal: "",
                                 isManager: false,
                                 nextMeeting: getDate(yesterday),
+                                cardioInfo: {
+                                    calories: 0,
+                                    timesAweek: 0,
+                                    hasCardio: false
+                                },
                                 trainingInfo: {
                                     hasValues: false,
                                     dates: [getDate(date), getDate(date)],

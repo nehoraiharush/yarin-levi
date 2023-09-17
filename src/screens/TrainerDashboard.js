@@ -9,12 +9,14 @@ import { ISMANAGER, MANAGERNAME, USERID, USERNAME } from './Login'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { db } from '../firebase/firebaseConfig'
-import { collection, getDocs, limit, query, where } from 'firebase/firestore'
+import { addDoc, collection, doc, getDocs, limit, query, updateDoc, where } from 'firebase/firestore'
 
 import '../style/TrainerCard.css';
 import BackButton from '../components/BackButton'
 import { useTrainerContext } from '../components/TrainerContexts'
 import CustomeModal from '../components/CustomeModal'
+import { useRef } from 'react'
+import TrainerComment from '../Comment'
 
 const TrainerDashboard = () => {
 
@@ -22,17 +24,15 @@ const TrainerDashboard = () => {
     const { id } = useParams();
 
     const trainersDB = collection(db, 'trainers');
+    const commentsDB = collection(db, "comments");
+
     const [trainer, setTrainer] = useState(null);
     const disable = localStorage.getItem(USERNAME) === MANAGERNAME ? false : true;
+    const textareaCommentRef = useRef();
 
     const [modalShown, invokeModal] = useState(false);
 
     const { isOpen, setOpen } = useTrainerContext();
-
-    useEffect(() => {
-        console.log(localStorage.getItem(USERID));
-
-    }, [id])
 
     const getData = async () => {
         if (id) {
@@ -54,6 +54,29 @@ const TrainerDashboard = () => {
             }
 
         } else toast.error("מתאמן לא נמצא");
+    }
+
+    const AddComment = () => {
+        if (textareaCommentRef && textareaCommentRef.current.value !== '') {
+            const comment = new TrainerComment(trainer.name, textareaCommentRef.current.value);
+            const commentObject = {
+                name: comment.getName(),
+                content: comment.getContent(),
+                approved: comment.isApproved()
+            }
+
+            addDoc(commentsDB, commentObject)
+                .then(async document => {
+                    await updateDoc(doc(db, 'comments', document.id), {
+                        id: document.id,
+                        ...commentObject
+                    })
+                    toast.success(`התגובה נוספה בהצלחה`);
+                })
+                .catch(err => {
+                    toast.error(err.message)
+                });
+        } else toast.warning('תוכן התגובה לא יכול להיות ריק')
     }
 
     useEffect(() => {
@@ -78,18 +101,29 @@ const TrainerDashboard = () => {
                     <>
                         <TrainerView disable={disable} setTrainer={setTrainer} trainer={trainer} toggleSidebar={setOpen} id={id} />
                         <Sidebar trainer={trainer} isOpen={isOpen} setOpen={setOpen} />
-                        {disable &&
-                            <div className='comment-btn'>
-                                <BsPencilSquare onClick={() => invokeModal(true)} color='black' size={44} />
-                            </div>
-                            &&
-                            <CustomeModal
-                                isShown={modalShown}
-                                invokeModal={invokeModal}
-                                title={'פגישות קרובות: '}
-                                bodyTitle={<h4>פגישות ב - 7 ימים הבאים: </h4>}
-                                body={<h1>כלום</h1>}
-                            />
+                        {disable ?
+                            <>
+                                <CustomeModal
+                                    isShown={modalShown}
+                                    invokeModal={invokeModal}
+                                    title={'הוסף תגובה:'}
+                                    bodyTitle={''}
+                                    body={
+                                        <>
+                                            <label>תוכן התגובה:</label>
+                                            <br />
+                                            <textarea ref={textareaCommentRef} placeholder='רשום כאן...' style={{ resize: 'none', minHeight: '150px', width: '100%' }} />
+                                        </>
+                                    }
+                                    addComment={AddComment}
+                                    setShowAllMeetings={undefined}
+                                    showAllMeetings={undefined}
+                                />
+                                <div className='comment-btn'>
+                                    <BsPencilSquare onClick={() => invokeModal(true)} color='black' size={44} />
+                                </div>
+                            </>
+                            : null
                         }
 
                     </>
