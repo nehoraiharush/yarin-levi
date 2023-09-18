@@ -7,7 +7,7 @@
     width: 210px;
     background-color: #CCCCCC;
     transition: right 0.3s ease-in-out;
-    z-index: 5;
+    z-index: 6;
 }
 
 .sidebar.open {
@@ -29,7 +29,7 @@
 .toggle-btn-wrapper.open {
     right: 230px;
     position: fixed;
-    z-index: 5;
+    z-index: 6;
 }
 
 .nav {
@@ -64,4 +64,8 @@ header {
 
 .side-bar-box-shadow-container {
     box-shadow: -10px 1px 8px 0 rgba(0, 0, 0, 0.5), -10px 2px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.name-area {
+    width: max(50%, 250px);
 }

@@ -22,6 +22,11 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
     const { state, dispatch } = useTrainerContext();
     const [hasChanged, setChange] = useState(false);
     const [modalShown, invokeModal] = useState(false);
+    const [textareaWidth, setTextareaWidth] =
+        useState(
+            trainer.name.replace(' ', '').length * 22
+        );
+
     const dateInput = useRef();
     const navigate = useNavigate();
     const { meetingsDict, trainersList } = state;
@@ -140,20 +145,24 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                                 }}
                             >
                                 {/* DELETE ICON AND NAME */}
-                                <div style={{ display: 'flex', alignItems: 'center', zIndex: '4' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', zIndex: '4', justifyContent: 'center' }}>
+
                                     <h2>
                                         <textarea
                                             value={trainer.name}
                                             disabled={disable}
-                                            onChange={(e) => changeTrainerData({
-                                                ...trainer,
-                                                name: e.target.value
-                                            })}
+                                            onChange={(e) => {
+                                                setTextareaWidth(e.target.value.replace(' ', '').length * 22);
+                                                changeTrainerData({
+                                                    ...trainer,
+                                                    name: e.target.value
+                                                })
+                                            }}
                                             dir='auto'
                                             style={{
                                                 resize: 'none',
-                                                width: '250px',
-                                                height: '40px',
+                                                width: `${textareaWidth}px`,
+                                                height: '43px',
                                                 background: 'none',
                                                 border: 'none',
                                                 color: 'white',
@@ -161,6 +170,8 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                                                 paddingRight: '5px'
                                             }}
                                         />
+
+
                                     </h2>
                                     {!disable && <BsTrash
                                         className='delete-icon'

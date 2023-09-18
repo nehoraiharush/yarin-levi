@@ -30,6 +30,17 @@ const Login = () => {
 
     const { state, dispatch } = useTrainerContext();
 
+    useEffect(() => {
+        if (localStorage.getItem(USERID) && localStorage.getItem(USERNAME)) {
+            if (localStorage.getItem(ISMANAGER)) {
+                navigate(`../all-trainers`);
+            } else {
+                navigate(`../trainer-dashboard/${localStorage.getItem(USERID)}`);
+            }
+            toast.success('שלום ' + localStorage.getItem(USERNAME));
+        }
+    }, [])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
