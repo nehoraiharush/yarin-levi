@@ -27,7 +27,7 @@ const Weight = ({ trainer, setTrainer, disable }) => {
                     name='weight'
                     onChange={handleChange}
                     style={{
-                        height: '195px',
+                        height: '200px',
                         width: '185px',
                         fontSize: '5em',
                         fontWeight: '500',
@@ -47,7 +47,7 @@ const Weight = ({ trainer, setTrainer, disable }) => {
                         name='trend'
                         onChange={handleChange}
                         style={{
-                            width: '50px',
+                            width: '60px',
                             background: 'none',
                             border: 'none',
                             color: 'white',
