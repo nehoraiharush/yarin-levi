@@ -12,6 +12,10 @@ const Procces = ({ trainer, setTrainer, disable }) => {
         })
     }
 
+    const inputsize =
+        trainer.trainingInfo.process.replace(/ /g, '').length * 62
+        -
+        (trainer.trainingInfo.process.replace(/ /g, '').length <= 3 ? 0 : trainer.trainingInfo.process.replace(/ /g, '').length * 5);
 
     return (
         <div className='box-shadow-container' style={{
@@ -21,11 +25,7 @@ const Procces = ({ trainer, setTrainer, disable }) => {
             alignItems: 'center',
             backgroundColor: 'rgba(255, 255, 255, 0.4)',
             borderRadius: '50%',
-            padding: '10px',
-            paddingTop: '5px',
-            paddingRight: '10px',
-            paddingLeft: '15px',
-            height: '180px'
+            height: `${inputsize - 20}px`
         }}>
             <div dir='auto'>
                 בתהליך:
@@ -34,7 +34,7 @@ const Procces = ({ trainer, setTrainer, disable }) => {
                 disabled={disable}
                 onChange={handleChange}
                 style={{
-                    width: '170px',
+                    width: `${inputsize}px`,
                     fontSize: '4em',
                     background: 'none',
                     border: 'none',
