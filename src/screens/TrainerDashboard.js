@@ -5,7 +5,7 @@ import { BsPencilSquare } from 'react-icons/bs'
 import Sidebar from '../components/Sidebar'
 import TrainerView from '../components/TrainerView'
 import LoadingSpinner from '../components/Loading'
-import { ISMANAGER, MANAGERNAME, USERID, USERNAME } from './Login'
+import { ISMANAGER, USERID } from './Login'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { db } from '../firebase/firebaseConfig'
@@ -27,7 +27,7 @@ const TrainerDashboard = () => {
     const commentsDB = collection(db, "comments");
 
     const [trainer, setTrainer] = useState(null);
-    const disable = localStorage.getItem(USERNAME) === MANAGERNAME ? false : true;
+    const disable = localStorage.getItem(ISMANAGER) === 'true' ? false : true;
     const textareaCommentRef = useRef();
 
     const [modalShown, invokeModal] = useState(false);

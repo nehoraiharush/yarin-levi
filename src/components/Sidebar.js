@@ -56,7 +56,7 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
                                     {
                                         trainer ?
                                             <>
-                                                <Link color='red' className='nav-link'
+                                                <Link className='nav-link'
                                                     to={`../trainer-dashboard/${trainer.id}`}
                                                 >
                                                     שלום {trainer.name}
@@ -69,6 +69,11 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
                                                 <Link className='nav-link'
                                                     to={`../${managerConeected ? 'editor' : 'training-info'}/${trainer.id}/nutrition`}
                                                 >תפריט תזונה</Link>
+                                                <Link className='nav-link'
+                                                    to={`../trainer-track/${trainer.id}`}
+                                                >
+                                                    לדף המעקב
+                                                </Link>
                                             </>
                                             :
                                             null

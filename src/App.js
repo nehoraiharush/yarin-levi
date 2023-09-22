@@ -11,10 +11,13 @@ import Editor from './screens/Editor.js';
 import TrainersCards from './screens/TrainersCards.js';
 import NotFoundPage from './screens/NotFoundPage.js';
 import TrainerDashboard from './screens/TrainerDashboard.js';
+import TrainerTrack from './screens/TrainerTrack.js';
+import Rectangle from './components/Rectangle.js';
+
+
 import { ToastContainer, Zoom } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
-import Rectangle from './components/Rectangle.js';
 
 function App() {
   return (
@@ -43,6 +46,7 @@ function App() {
             <Route path='/editor/:id/:type' element={<Editor />} />
             <Route path='/all-trainers' element={<TrainersCards />} />
             <Route path='/trainer-dashboard/:id' element={<TrainerDashboard />} />
+            <Route path='/trainer-track/:id' element={<TrainerTrack />} />
 
             <Route path='/*' element={<NotFoundPage />} />
           </Routes>

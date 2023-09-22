@@ -27,7 +27,7 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
     const navigate = useNavigate();
     const { meetingsDict, trainersList } = state;
 
-    const textareaWidth = trainer.name.replace(/ /g, '').length * 22;
+    const textareaWidth = trainer.name.replace(/ /g, '').length * 23;
     const inputGoalWidth = trainer.goal.replace(/ /g, '').length * 16 + 5;
 
     const dispatchChanges = async () => {
@@ -133,7 +133,7 @@ const TrainerView = ({ disable, toggleSidebar, trainer, setTrainer }) => {
                                 :
                                 null
                         }
-                        <Row style={{ marginTop: '40px', gap: '40px' }}>
+                        <Row style={{ marginTop: '40px', gap: '10px' }}>
                             <Col
                                 lg={4}
                                 style={{

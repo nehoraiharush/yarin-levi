@@ -13,7 +13,7 @@ const Procces = ({ trainer, setTrainer, disable }) => {
     }
 
     const inputsize =
-        trainer.trainingInfo.process.replace(/ /g, '').length * 62
+        trainer.trainingInfo.process.replace(/ /g, '').length * 60
         -
         (trainer.trainingInfo.process.replace(/ /g, '').length <= 3 ? 0 : trainer.trainingInfo.process.replace(/ /g, '').length * 5);
 
@@ -25,7 +25,8 @@ const Procces = ({ trainer, setTrainer, disable }) => {
             alignItems: 'center',
             backgroundColor: 'rgba(255, 255, 255, 0.4)',
             borderRadius: '50%',
-            height: `${inputsize - 20}px`
+            height: `${inputsize - 20}px`,
+            minHeight: '190px'
         }}>
             <div dir='auto'>
                 בתהליך:
@@ -34,6 +35,7 @@ const Procces = ({ trainer, setTrainer, disable }) => {
                 disabled={disable}
                 onChange={handleChange}
                 style={{
+                    minWidth: '200px',
                     width: `${inputsize}px`,
                     fontSize: '4em',
                     background: 'none',
