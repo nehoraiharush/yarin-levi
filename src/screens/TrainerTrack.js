@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { ISMANAGER, USERID } from './Login';
 import { collection, doc, getDocs, limit, query, updateDoc, where } from 'firebase/firestore';
@@ -12,6 +12,8 @@ import Sidebar from '../components/Sidebar';
 import BackButton from '../components/BackButton';
 
 import '../style/TrainerCard.css';
+
+const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
 
 export const trackInit = {
     months: [
@@ -59,6 +61,7 @@ const TrainerTrack = () => {
 
     const handleDispatchChanges = async () => {
         if (trainer) {
+            console.log(trainer.trackInfo);
             try {
                 dispatch({
                     type: SETLOADING,
@@ -76,6 +79,7 @@ const TrainerTrack = () => {
                 setChange(false);
                 toast.success('השינויים נשמרו בהצלחה')
             } catch (error) {
+                console.log(error.message);
                 toast.error('בעיה בשמירת השינויים אנא - נסה שנית')
             }
             finally {
@@ -126,7 +130,7 @@ const TrainerTrack = () => {
                     }
                 }
             });
-        } else {
+        } else if (type === 'changeDate') {
             setTrainer({
                 ...trainer,
                 trackInfo: {
@@ -194,6 +198,7 @@ const TrainerTrack = () => {
                                             }}
                                         >
                                             <div
+                                                dir='rtl'
                                                 style={{
                                                     flexWrap: 'wrap',
                                                     position: 'relative',
@@ -205,9 +210,9 @@ const TrainerTrack = () => {
                                                     overflow: 'auto'
                                                 }}>
 
-                                                <div dir='rtl' style={{ display: 'flex' }}>
+                                                <div style={{ display: 'flex' }}>
                                                     {
-                                                        trackInit.dates.map((value, index) =>
+                                                        trainer.trackInfo.dates.map((value, index) =>
                                                             <h3 key={index} style={{ textAlign: 'center', width: '110px' }}>{index + 1}</h3>
                                                         )
                                                     }
@@ -217,93 +222,20 @@ const TrainerTrack = () => {
                                                     month={''}
                                                     setTrainer={changeTrainerData}
                                                     disable={disable}
-                                                    values={trackInit.dates}
+                                                    values={trainer.trackInfo.dates}
                                                 />
 
-                                                <MonthTrackTable
-                                                    month={'january'}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trackInit.monthlyValues.january}
-                                                />
-
-                                                <MonthTrackTable
-                                                    month={'february'}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trackInit.monthlyValues.february}
-                                                />
-
-                                                <MonthTrackTable
-                                                    month={'march'}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trackInit.monthlyValues.march}
-                                                />
-
-                                                <MonthTrackTable
-                                                    month={'april'}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trackInit.monthlyValues.april}
-                                                />
-
-                                                <MonthTrackTable
-                                                    month={'may'}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trackInit.monthlyValues.may}
-                                                />
-
-                                                <MonthTrackTable
-                                                    month={'june'}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trackInit.monthlyValues.june}
-                                                />
-
-                                                <MonthTrackTable
-                                                    month={'july'}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trackInit.monthlyValues.july}
-                                                />
-
-                                                <MonthTrackTable
-                                                    month={'august'}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trackInit.monthlyValues.august}
-                                                />
-
-                                                <MonthTrackTable
-                                                    month={'september'}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trackInit.monthlyValues.september}
-                                                />
-
-                                                <MonthTrackTable
-                                                    month={'october'}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trackInit.monthlyValues.october}
-                                                />
-
-                                                <MonthTrackTable
-                                                    month={'november'}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trackInit.monthlyValues.november}
-                                                />
-
-                                                <MonthTrackTable
-                                                    month={'december'}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trackInit.monthlyValues.december}
-                                                />
-
+                                                {
+                                                    months.map((month, index) => (
+                                                        <MonthTrackTable
+                                                            key={index}
+                                                            month={month}
+                                                            setTrainer={changeTrainerData}
+                                                            disable={disable}
+                                                            values={trainer.trackInfo.monthlyValues[month]}
+                                                        />
+                                                    ))
+                                                }
 
                                             </div>
                                             <div

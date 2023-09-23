@@ -24,8 +24,8 @@ const MonthTrackTable = ({ values, disable, setTrainer, month }) => {
             <div dir='rtl' style={{ display: 'flex' }}>
                 {
                     month === '' ?
-                        values.map((value, index) => (
-                            <section
+                        values.map((value, index) => {
+                            return (<section
                                 style={{
                                     backgroundColor: '#C9D1DA',
                                     minWidth: '100px',
@@ -37,7 +37,7 @@ const MonthTrackTable = ({ values, disable, setTrainer, month }) => {
                             >
                                 <input
                                     disabled={disable}
-                                    onChange={(e) => handleValueChange(index, e.target.value)}
+                                    onChange={(e) => handleHeaderChange(index, e.target.value)}
                                     value={value}
                                     style={{
                                         border: 'none',
@@ -45,7 +45,8 @@ const MonthTrackTable = ({ values, disable, setTrainer, month }) => {
                                     }}
                                 />
                             </section>
-                        ))
+                            )
+                        })
                         :
                         values.map((value, index) => (
                             <section style={{
@@ -59,7 +60,7 @@ const MonthTrackTable = ({ values, disable, setTrainer, month }) => {
                             >
                                 <input
                                     disabled={disable}
-                                    onChange={(e) => handleHeaderChange(index, e.target.value)}
+                                    onChange={(e) => handleValueChange(index, e.target.value)}
                                     value={value}
                                     style={{
                                         border: 'none',
