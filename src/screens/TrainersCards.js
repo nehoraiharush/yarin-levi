@@ -4,7 +4,7 @@ import { Container, Row, Col, Form } from 'react-bootstrap';
 
 import { SETLOADING, SETTRAINERS, useTrainerContext } from '../components/TrainerContexts';
 import { useEffect } from 'react';
-import { ISMANAGER, USERID, USERNAME } from './Login';
+import { ISMANAGER } from './Login';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
@@ -44,9 +44,8 @@ const today = new Date();
 const first = today.getDate() - today.getDay();
 const last = first + 6;
 
-const firstday = new Date(today.setDate(first));
-const lastday = new Date(today.setDate(last));
-const next7Days = new Date(today.setDate(today.getDate() + 7));
+const firstday = new Date(new Date().setDate(first));
+const lastday = new Date(new Date().setDate(last));
 
 export default function TrainersCards() {
 
@@ -75,10 +74,11 @@ export default function TrainersCards() {
             return Object.entries(meetingsDict).map(([date, names], index) => {
                 const date2 = date.split('-');
                 const newDate = new Date(parseInt(date2[0]), parseInt(date2[1]) - 1, parseInt(date2[2]));
-                if (newDate <= lastday && newDate >= firstday) {
+                // console.log(newDate, today);
+                if (newDate.getDate() <= lastday.getDate() && newDate.getDate() >= firstday.getDate()) {
                     return (
                         <div key={index}>
-                            <h4><u>{date}:</u></h4>
+                            <h4><u>{newDate.getDate() === today.getDate() ? 'היום' : date}:</u></h4>
                             {names.map((name, innerIndex) => (
                                 <h4 key={innerIndex}>{`${innerIndex + 1}. ${name}`}</h4>
                             ))}
@@ -96,7 +96,7 @@ export default function TrainersCards() {
         const buildModalBody = () => {
             return Object.entries(meetingsDict).map(([date, names], index) => {
                 return (
-                    <div key={index}>
+                    <div dir='rtl' key={index}>
                         <h4><u>{date}:</u></h4>
                         {names.map((name, innerIndex) => (
                             <h4 key={innerIndex}>{`${innerIndex + 1}. ${name}`}</h4>
@@ -170,7 +170,7 @@ export default function TrainersCards() {
                             <div style={{ ...trainersCardsStyle }}>
                                 {/* Display filtered active trainers */}
                                 {filteredActiveTrainers.map((trainer, index) => (
-                                    <TrainerCard key={index} id={trainer.id} trainer={trainer} />
+                                    <TrainerCard key={index} trainer={trainer} />
                                 ))}
                             </div>
                         </Col>
@@ -181,7 +181,7 @@ export default function TrainersCards() {
                         <Col>
                             <div style={{ ...trainersCardsStyle }}>
                                 {filteredPauseTrainers.map((trainer, index) => (
-                                    <TrainerCard key={index} id={trainer.id} trainer={trainer} />
+                                    <TrainerCard key={index} trainer={trainer} />
                                 ))}
                             </div>
                         </Col>
@@ -191,7 +191,7 @@ export default function TrainersCards() {
                         <Col>
                             <div style={{ ...trainersCardsStyle }}>
                                 {filteredOfflineTrainers.map((trainer, index) => (
-                                    <TrainerCard key={index} id={trainer.id} trainer={trainer} />
+                                    <TrainerCard key={index} trainer={trainer} />
                                 ))}
                             </div>
                         </Col>

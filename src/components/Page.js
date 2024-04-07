@@ -23,6 +23,7 @@ const FONTSIZEREGEX = /font-size:\s*(\d+)pt;/g;
 const TrainingPage = () => {
 
     const [trainer, setTrainer] = useState(null);
+    const [title, setTitle] = useState('');
     const [page, setPages] = useState(null);
 
     const { isOpen, setOpen } = useTrainerContext();
@@ -41,10 +42,18 @@ const TrainingPage = () => {
 
     useEffect(() => {
         if (trainer) {
-            if (type === 'trainingPlan')
+            if (type === 'trainingPlan') {
                 setPages(new Page(trainer.trainingInfo.trainingPlan, 1));
-            else if (type === 'nutrition')
+                setTitle('תוכנית אימונים')
+            }
+            else if (type === 'nutrition') {
                 setPages(new Page(trainer.trainingInfo.nutrition, 1));
+                setTitle('תפריט תזונה')
+            }
+            else if (type === 'progress') {
+                setPages(new Page(!trainer.trackInfo ? 'אין מעקב' : trainer.trackInfo));
+                setTitle('מעקב התקדמות')
+            }
         }
     }, [trainer, type])
 
@@ -87,7 +96,7 @@ const TrainingPage = () => {
     return (
         <div >
             <Container onClick={() => setOpen('')} style={{ height: '100vh' }} >
-
+                <h1 style={{ textAlign: 'center', marginTop: '1rem' }}>{title}</h1>
                 {
                     trainer && trainer !== undefined && id ?
                         <>

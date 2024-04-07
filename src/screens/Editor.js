@@ -44,6 +44,9 @@ const Editor = () => {
                 setPage(new Page(trainer.trainingInfo.trainingPlan, 1));
             else if (type === 'nutrition')
                 setPage(new Page(trainer.trainingInfo.nutrition, 1));
+            else if (type === 'progress')
+                setPage(new Page(!trainer.trackInfo ? 'אין מעקב' : trainer.trackInfo));
+
         }
     }, [trainer, type])
 
@@ -102,7 +105,13 @@ const Editor = () => {
                         nutrition: tinymce.current.getContent()
                     }
                 })
+            } else if (type === 'progress') {
+                setTrainer({
+                    ...trainer,
+                    trackInfo: tinymce.current.getContent()
+                })
             }
+
             setChange(true);
         }
     }

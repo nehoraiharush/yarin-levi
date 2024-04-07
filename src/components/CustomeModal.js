@@ -56,8 +56,8 @@ const CustomeModal = ({
 
                 <Button variant="danger"
                     onClick={() => {
-                        invokeModal(false);
                         if (showAllMeetings) setShowAllMeetings(false);
+                        invokeModal(false);
                     }}>
                     סגור
                 </Button>

@@ -1,14 +1,36 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Image } from 'react-bootstrap';
 import '../style/TrainerCard.css';
 import { useNavigate } from 'react-router-dom';
 
 import LoadingSpinner from './Loading';
-const TrainerCard = ({ trainer, id }) => {
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
+
+const TrainerCard = ({ trainer }) => {
     const navigate = useNavigate();
+    const paymentCheckboxRef = useRef();
 
     const toTrainerDash = () => {
-        navigate(`../trainer-dashboard/${id}`);
+        navigate(`../trainer-dashboard/${trainer.id}`);
+    }
+
+    const dispatchChanges = async () => {
+        try {
+            const trainerDoc = doc(db, 'trainers', trainer.id);
+            await updateDoc(trainerDoc, {
+                ...trainer,
+                hasPaid: paymentCheckboxRef.current.checked
+            })
+        } catch (error) {
+            throw new Error();
+        }
+    }
+
+    const handlePaymentChange = (e) => {
+        paymentCheckboxRef.current.checked = !paymentCheckboxRef.current.checked
+        e.stopPropagation();
+        dispatchChanges();
     }
 
     return (
@@ -30,7 +52,7 @@ const TrainerCard = ({ trainer, id }) => {
                             alt='profile image'
                             style={{
                                 height: '12vw',
-                                width: '12vw',
+                                width: '13vw',
                                 borderRadius: '50%',
                                 zIndex: '2'
                             }}
@@ -48,6 +70,10 @@ const TrainerCard = ({ trainer, id }) => {
 
                             </div>
                             <h5 className='age'>גיל: {trainer.age}</h5>
+                            <div onClick={handlePaymentChange} style={{ display: 'flex', justifyContent: 'center', gap: '5px', alignItems: 'baseline' }}>
+                                <input ref={paymentCheckboxRef} onChange={handlePaymentChange} checked={trainer.hasPaid ? true : false} type='checkbox' style={{ height: '100%', zIndex: '3' }} />
+                                <h5 style={{ userSelect: 'none' }} >שילם</h5>
+                            </div>
                         </div>
                     </div>
             }

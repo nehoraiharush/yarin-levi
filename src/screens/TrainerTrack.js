@@ -19,20 +19,39 @@ export const trackInit = {
     months: [
         'ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'
     ],
-    dates: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-    monthlyValues: {
-        january: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        february: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        march: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        april: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        may: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        june: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        july: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        august: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        september: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        october: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        november: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        december: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    [new Date().getFullYear()]: {
+        dates: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        monthlyValues: {
+            january: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            february: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            march: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            april: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            may: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            june: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            july: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            august: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            september: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            october: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            november: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            december: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        }
+    },
+    '2024': {
+        dates: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        monthlyValues: {
+            january: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            february: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            march: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            april: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            may: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            june: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            july: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            august: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            september: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            october: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            november: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            december: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        }
     }
 }
 
@@ -40,6 +59,7 @@ const TrainerTrack = () => {
 
     const [trainer, setTrainer] = useState(null);
     const [hasChanges, setChange] = useState(false);
+    const [yearTrack, setYear] = useState(new Date().getFullYear());
     const disable = localStorage.getItem(ISMANAGER) === 'true' ? false : true;
 
     const navigate = useNavigate();
@@ -50,10 +70,18 @@ const TrainerTrack = () => {
 
     const trainersDB = collection(db, 'trainers');
 
-    const dispatchChanges = async () => {
+    const handleSelectionChange = (e) => {
+        setYear(e.target.value);
+    }
+
+    const dispatchChanges = async (data) => {
         try {
             const trainerDoc = doc(db, 'trainers', id);
-            await updateDoc(trainerDoc, trainer)
+
+            if (data !== undefined) {
+                await updateDoc(trainerDoc, data);
+            }
+            else await updateDoc(trainerDoc, trainer);
         } catch (error) {
             throw new Error();
         }
@@ -61,7 +89,6 @@ const TrainerTrack = () => {
 
     const handleDispatchChanges = async () => {
         if (trainer) {
-            console.log(trainer.trackInfo);
             try {
                 dispatch({
                     type: SETLOADING,
@@ -115,18 +142,22 @@ const TrainerTrack = () => {
         } else toast.error("מתאמן לא נמצא");
     }
 
-    const changeTrainerData = (type, data) => {
+    const changeTrainerData = async (type, data) => {
         setChange(true);
         if (type === 'init') {
             setTrainer(data);
+            dispatchChanges(data);
         } else if (type === 'changeValue') {
             setTrainer({
                 ...trainer,
                 trackInfo: {
                     ...trainer.trackInfo,
-                    monthlyValues: {
-                        ...trainer.trackInfo.monthlyValues,
-                        [data.month]: data.values
+                    [yearTrack]: {
+                        ...trainer.trackInfo[yearTrack],
+                        monthlyValues: {
+                            ...trainer.trackInfo[yearTrack].monthlyValues,
+                            [data.month]: data.values
+                        }
                     }
                 }
             });
@@ -135,7 +166,10 @@ const TrainerTrack = () => {
                 ...trainer,
                 trackInfo: {
                     ...trainer.trackInfo,
-                    dates: data.values
+                    [yearTrack]: {
+                        ...trainer.trackInfo[yearTrack],
+                        dates: data.values
+                    }
                 }
             });
         }
@@ -149,18 +183,16 @@ const TrainerTrack = () => {
         if (isOpen === 'open') setOpen('');
         if (id)
             getData();
-    }, [id])
+    }, [id]);
 
     return (
         <>
             <div onClick={() => setOpen('')}
                 style={{
-                    height: '100vh',
+                    height: '100%',
                     width: '100%',
                     display: 'grid',
                     placeItems: 'center',
-                    overflow: 'hidden',
-                    overflowY: 'scroll'
                 }}>
                 {
                     trainer ?
@@ -169,7 +201,7 @@ const TrainerTrack = () => {
 
                                 <>
                                     {hasChanges &&
-                                        <Row style={{ display: 'grid', placeItems: 'center', paddingTop: '20px', width: '50%' }} >
+                                        <Row style={{ display: 'grid', placeItems: 'center', paddingTop: '5px', width: '50%' }} >
                                             {
                                                 !state?.isLoading ?
                                                     <Button
@@ -188,7 +220,13 @@ const TrainerTrack = () => {
                                         </Row>
                                     }
 
-                                    <Row style={{ width: '100%', marginTop: '20px', paddingLeft: '15px', overflow: 'scroll' }} >
+
+                                    <Row style={{
+                                        width: '100%',
+                                        marginTop: '10px',
+                                        padding: '0px 15px 0px 15px',
+                                        overflow: 'scroll'
+                                    }} >
                                         <div
                                             style={{
                                                 display: 'flex',
@@ -197,47 +235,51 @@ const TrainerTrack = () => {
                                                 gap: '20px',
                                             }}
                                         >
-                                            <div
-                                                dir='rtl'
-                                                style={{
-                                                    flexWrap: 'wrap',
-                                                    position: 'relative',
-                                                    width: '85%',
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    overflow: 'auto'
-                                                }}>
+                                            {
+                                                trainer.trackInfo[yearTrack] ?
+                                                    <div
+                                                        dir='rtl'
+                                                        style={{
+                                                            flexWrap: 'wrap',
+                                                            width: '85%',
+                                                            display: 'flex',
+                                                            flexDirection: 'column',
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center',
+                                                            overflow: 'auto'
+                                                        }}>
 
-                                                <div style={{ display: 'flex' }}>
-                                                    {
-                                                        trainer.trackInfo.dates.map((value, index) =>
-                                                            <h3 key={index} style={{ textAlign: 'center', width: '110px' }}>{index + 1}</h3>
-                                                        )
-                                                    }
-                                                </div>
-
-                                                <MonthTrackTable
-                                                    month={''}
-                                                    setTrainer={changeTrainerData}
-                                                    disable={disable}
-                                                    values={trainer.trackInfo.dates}
-                                                />
-
-                                                {
-                                                    months.map((month, index) => (
+                                                        <div style={{ display: 'flex' }}>
+                                                            {
+                                                                new Array(15).fill(0).map((value, index) =>
+                                                                    <h3 key={index} style={{ textAlign: 'center', width: '110px' }}>{index + 1}</h3>
+                                                                )
+                                                            }
+                                                        </div>
                                                         <MonthTrackTable
-                                                            key={index}
-                                                            month={month}
+                                                            month={''}
                                                             setTrainer={changeTrainerData}
                                                             disable={disable}
-                                                            values={trainer.trackInfo.monthlyValues[month]}
+                                                            values={trainer.trackInfo[yearTrack].dates}
                                                         />
-                                                    ))
-                                                }
 
-                                            </div>
+                                                        {
+                                                            months.map((month, index) => (
+                                                                <MonthTrackTable
+                                                                    key={index}
+                                                                    month={month}
+                                                                    setTrainer={changeTrainerData}
+                                                                    disable={disable}
+                                                                    values={trainer.trackInfo[yearTrack].monthlyValues[month]}
+                                                                />
+                                                            ))
+                                                        }
+
+                                                    </div>
+                                                    :
+                                                    <h1 style={{ width: '85%', display: 'grid', placeItems: 'center' }}>אין מעקב עבור שנה זאת</h1>
+
+                                            }
                                             <div
                                                 style={{
                                                     width: '15%',
@@ -249,7 +291,18 @@ const TrainerTrack = () => {
                                                 }}
                                             >
                                                 <>
-                                                    <h5 style={{ height: '30px' }}>:תאריך</h5>
+                                                    <div style={{ display: 'flex', gap: '10px' }}>
+                                                        <h5 style={{ height: '30px' }}>:תאריך</h5>
+                                                        <select onChange={handleSelectionChange}>
+                                                            {
+                                                                Object.keys(trainer.trackInfo).map((title, index) => {
+                                                                    if (title !== 'months') {
+                                                                        return <option key={index} value={title}>{title}</option>
+                                                                    } else return null;
+                                                                })
+                                                            }
+                                                        </select>
+                                                    </div>
                                                     {
                                                         trainer.trackInfo.months
                                                             .map((month, index) => <h5 style={{ height: '30px' }} key={index} >{month}</h5>)
@@ -282,7 +335,14 @@ const TrainerTrack = () => {
                                     <h1 dir='rtl'>אין עדיין מעקב פנה לירין.</h1>
                         )
                         :
-                        <LoadingSpinner />
+                        <div style={{
+                            height: '100vh',
+                            width: '100%',
+                            display: 'grid',
+                            placeItems: 'center',
+                        }}>
+                            <LoadingSpinner />
+                        </div>
                 }
             </div >
             <Sidebar isOpen={isOpen} setOpen={setOpen} trainer={trainer} />

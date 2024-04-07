@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import YarinLevi from "../components/YarinLevi";
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
@@ -53,7 +53,7 @@ const Login = () => {
             });
             try {
                 const name = userNameRef.current.value
-                const q = query(trainersDB, where('name', '==', name), limit(1))
+                const q = query(trainersDB, where('name', '==', name), where('password', '==', passwordRef.current.value), limit(1))
                 const data = await getDocs(q);
 
                 if (!data.empty) {
@@ -61,6 +61,7 @@ const Login = () => {
                     localStorage.removeItem(USERNAME);
                     localStorage.setItem(USERID, data.docs[0].id);
                     localStorage.setItem(USERNAME, name)
+
                     if (name === MANAGERNAME) {
                         localStorage.setItem(ISMANAGER, 'true');
                         navigate(`../all-trainers`);

@@ -68,6 +68,11 @@ export const TrainerProvider = ({ children }) => {
         if (state.trainersList.length <= 1) {
             try {
                 const trainers = await getTrainersFromFirebase();
+
+                if (currentDay === 1) {
+                    trainers.map((trainer) => trainer.hasPaid = false);
+                }
+
                 dispatch({
                     type: SETTRAINERS,
                     payload: {

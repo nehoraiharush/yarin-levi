@@ -18,6 +18,8 @@ import CustomeModal from '../components/CustomeModal'
 import { useRef } from 'react'
 import TrainerComment from '../Comment'
 
+import { DeleteStorage } from '../components/Sidebar'
+
 const TrainerDashboard = () => {
 
     const navigate = useNavigate();
@@ -39,8 +41,19 @@ const TrainerDashboard = () => {
             try {
                 const q = query(trainersDB, where('id', '==', id), limit(1))
                 const data = await getDocs(q);
+
                 if (!data.empty) {
-                    const trainerData = data.docs[0].data()
+                    const trainerData = data.docs[0].data();
+
+                    if (trainerData.status === 'offline' && localStorage.getItem(ISMANAGER) !== 'true') {
+                        toast.warn("גישה נדחתה צור קשר עם המאמן", {
+                            autoClose: 2500
+                        });
+                        DeleteStorage();
+                        navigate(-1)
+                        return;
+                    }
+
                     if (trainerData.isManager) {
                         setTrainer({ ...trainerData });
                     } else {
@@ -76,6 +89,8 @@ const TrainerDashboard = () => {
                 .catch(err => {
                     toast.error(err.message)
                 });
+
+            invokeModal(false);
         } else toast.warning('תוכן התגובה לא יכול להיות ריק')
     }
 
@@ -84,9 +99,10 @@ const TrainerDashboard = () => {
             navigate(-1)
             toast.warn('גישה נדחתה')
         }
+
         if (isOpen === 'open') setOpen('');
-        if (id)
-            getData();
+
+        if (id) getData();
     }, [id])
 
     return (

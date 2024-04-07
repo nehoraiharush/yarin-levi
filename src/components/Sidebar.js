@@ -8,6 +8,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ISMANAGER, MANAGERNAME, USERID, USERNAME } from '../screens/Login';
 import { toast } from 'react-toastify';
 
+export const DeleteStorage = () => {
+    localStorage.removeItem(USERID);
+    localStorage.removeItem(USERNAME);
+    localStorage.removeItem(ISMANAGER);
+}
 
 const MESSAGE = 'אני גם רוצה להתחיל את השינוי שלי💪'
 
@@ -24,13 +29,11 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
 
     const handleLogout = (e) => {
         const name = localStorage.getItem(USERNAME)
-        localStorage.removeItem(USERID);
-        localStorage.removeItem(USERNAME);
-        localStorage.removeItem(ISMANAGER);
+        DeleteStorage();
         if (localStorage.getItem(USERID) && localStorage.getItem(USERNAME))
             e.preventDefault();
         toast.success(`${name} התנתק בהצלחה`)
-        setOpen('')
+        setOpen('');
     }
 
     return (
@@ -70,9 +73,9 @@ const Sidebar = ({ isOpen, setOpen, trainer }) => {
                                                     to={`../${managerConeected ? 'editor' : 'training-info'}/${trainer.id}/nutrition`}
                                                 >תפריט תזונה</Link>
                                                 <Link className='nav-link'
-                                                    to={`../trainer-track/${trainer.id}`}
+                                                    to={`../${managerConeected ? 'editor' : 'training-info'}/${trainer.id}/progress`}
                                                 >
-                                                    לדף המעקב
+                                                    מעקב התקדמות
                                                 </Link>
                                             </>
                                             :
