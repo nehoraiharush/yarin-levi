@@ -1,43 +1,44 @@
 .floating-button {
-    position: fixed;
-    left: 20px;
-    width: 70px;
-    height: 70px;
-    /* Adjust color as needed */
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 3;
-    user-select: none;
+  position: fixed;
+  left: 20px;
+  width: 70px;
+  height: 70px;
+  /* Adjust color as needed */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 3;
+  user-select: none;
 }
 
 .return-btn {
-    top: 20px;
-    background-color: rgba(255, 255, 255, 0.5);
-    width: 100px;
-    height: 100px;
-    mix-blend-mode: difference;
+  top: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: max-content;
+  height: max-content;
+  padding: 10px 30px;
+  mix-blend-mode: difference;
 }
 
 .plus-btn {
-    bottom: 30px;
-    background-color: #25d366;
+  bottom: 30px;
+  background-color: #25d366;
 }
 
 .plus-btn:hover {
-    background-color: #128c7e;
+  background-color: #128c7e;
 }
 
 .return-btn:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .plus-icon {
-    font-size: 42px;
-    color: #ffffff;
-    padding-bottom: 7px;
+  font-size: 42px;
+  color: #ffffff;
+  padding-bottom: 7px;
 }
